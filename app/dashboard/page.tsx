@@ -9,6 +9,14 @@ type Prediction = {
   away_score: number;
 };
 
+type PublicPrediction = {
+  match_id: number;
+  home_score: number;
+  away_score: number;
+  result_pick: string | null;
+  username: string;
+};
+
 type Match = {
   id: number;
   match_date: string;
@@ -76,9 +84,41 @@ export default async function DashboardPage({
     .order("match_time", { ascending: true });
 
   const matches: Match[] = matchData || [];
+  const matchIds = matches.map((match) => match.id);
+
+  const { data: allPredictionRows } =
+    matchIds.length > 0
+      ? await supabase
+          .from("predictions")
+          .select("user_id, match_id, home_score, away_score, result_pick")
+          .in("match_id", matchIds)
+      : { data: [] };
+
+  const { data: profileRows } = await supabase
+    .from("profiles")
+    .select("id, username");
+
+  const usernameByUserId = new Map(
+    (profileRows || []).map((profile) => [profile.id, profile.username])
+  );
+
+  const allPredictions: PublicPrediction[] =
+    allPredictionRows?.map((prediction) => ({
+      match_id: prediction.match_id,
+      home_score: prediction.home_score,
+      away_score: prediction.away_score,
+      result_pick: prediction.result_pick,
+      username: usernameByUserId.get(prediction.user_id) || "Speler",
+    })) || [];
 
   function getPrediction(matchId: number) {
     return predictions.find((prediction) => prediction.match_id === matchId);
+  }
+
+  function getPublicPredictions(matchId: number) {
+    return allPredictions.filter(
+      (prediction) => prediction.match_id === matchId
+    );
   }
 
   function formatDate(date: string) {
@@ -218,6 +258,7 @@ export default async function DashboardPage({
 
           {matches.map((match) => {
             const prediction = getPrediction(match.id);
+            const publicPredictions = getPublicPredictions(match.id);
 
             return (
               <div
@@ -298,6 +339,84 @@ export default async function DashboardPage({
                     <div style={{ fontWeight: 900 }}>{match.away_team}</div>
                   </div>
                 </div>
+
+                <details>
+                  <summary
+                    style={{
+                      listStyle: "none",
+                      backgroundColor: "#FCEA10",
+                      color: "black",
+                      padding: "12px 16px",
+                      textAlign: "center",
+                      fontWeight: 900,
+                      cursor: "pointer",
+                      borderTop: "1px solid rgba(0,0,0,0.08)",
+                    }}
+                  >
+                    Bekijk de pronostieken ▼
+                  </summary>
+
+                  <div
+                    style={{
+                      color: "black",
+                      backgroundColor: "#fff8b8",
+                      padding: 14,
+                    }}
+                  >
+                    {publicPredictions.length === 0 && (
+                      <div
+                        style={{
+                          textAlign: "center",
+                          fontWeight: 900,
+                          color: "#555",
+                        }}
+                      >
+                        Nog geen pronostieken.
+                      </div>
+                    )}
+
+                    {publicPredictions.map((item, index) => (
+                      <div
+                        key={`${item.match_id}-${index}`}
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          gap: 10,
+                          padding: "10px 0",
+                          borderBottom:
+                            index === publicPredictions.length - 1
+                              ? "none"
+                              : "1px solid rgba(0,0,0,0.15)",
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontWeight: 900,
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {item.username}
+                        </div>
+
+                        <div
+                          style={{
+                            fontWeight: 900,
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {item.home_score} - {item.away_score}
+                          {"  "}
+                          <span style={{ color: "#777" }}>
+                            ({item.result_pick || "?"})
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </details>
               </div>
             );
           })}
