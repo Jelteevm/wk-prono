@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Laag_1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 760 760">
+  <!-- Generator: Adobe Illustrator 29.5.1, SVG Export Plug-In . SVG Version: 2.1.0 Build 141)  -->
+  <defs>
+    <style>
+      .st0 {
+        stroke-width: 100px;
+      }
+
+      .st0, .st1 {
+        stroke: #fff;
+      }
+
+      .st2 {
+        clip-path: url(#clippath-4);
+      }
+
+      .st3, .st4 {
+        stroke: #c8102e;
+      }
+
+      .st3, .st1 {
+        stroke-width: 60px;
+      }
+
+      .st5 {
+        fill: #fff;
+      }
+
+      .st6 {
+        fill: none;
+      }
+
+      .st7 {
+        clip-path: url(#clippath-1);
+      }
+
+      .st8 {
+        clip-path: url(#clippath-3);
+      }
+
+      .st4 {
+        stroke-width: 40px;
+      }
+
+      .st9 {
+        fill: #012169;
+      }
+
+      .st10 {
+        clip-path: url(#clippath-2);
+      }
+
+      .st11 {
+        fill: #c8102e;
+      }
+
+      .st12 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <circle class="st6" cx="380" cy="380" r="379.98"/>
+    </clipPath>
+    <clipPath id="clippath-1">
+      <rect class="st6" x="-172.75" y="-8.65" width="779.41" height="389.7"/>
+    </clipPath>
+    <clipPath id="clippath-2">
+      <path class="st6" d="M-172.75-8.65L216.95,186.2H-172.75V-8.65ZM216.95-8.65h389.7L216.95,186.2V-8.65ZM216.95,186.2h389.7v194.85L216.95,186.2ZM216.95,186.2v194.85H-172.75L216.95,186.2Z"/>
+    </clipPath>
+    <clipPath id="clippath-3">
+      <rect class="st6" x="-172.75" y="-8.65" width="779.41" height="389.7"/>
+    </clipPath>
+    <clipPath id="clippath-4">
+      <rect class="st6" x="-172.75" y="-8.65" width="779.41" height="389.7"/>
+    </clipPath>
+  </defs>
+  <g class="st12">
+    <rect class="st9" x="-250.09" y="-47.66" width="1558.82" height="832.71"/>
+    <g id="Flag_of_the_United_Kingdom">
+      <g class="st7">
+        <path id="Saint_Andrews_Cross" class="st1" d="M-172.75-8.65l779.41,389.7M-172.75,381.05L606.66-8.65"/>
+      </g>
+      <g class="st10">
+        <path id="Saint_Patricks_Cross" class="st4" d="M-172.75-8.65l779.41,389.7M-172.75,381.05L606.66-8.65"/>
+      </g>
+      <g id="Saint_Georges_Cross">
+        <g class="st8">
+          <path class="st0" d="M216.95-8.65v389.7M-172.75,186.2h779.41"/>
+        </g>
+        <g class="st2">
+          <path class="st3" d="M216.95-8.65v389.7M-172.75,186.2h779.41"/>
+        </g>
+      </g>
+    </g>
+    <g id="Gamma_Crucis">
+      <g id="Pentagram">
+        <g id="Arm">
+          <path class="st5" d="M407.39,452.98v29.49l58.98-29.49h-58.98Z"/>
+          <path class="st5" d="M418.65,487.65l-17.33-23.86,65.04-10.81-47.71,34.66Z"/>
+        </g>
+        <g id="Arm1" data-name="Arm">
+          <path class="st5" d="M407.39,452.98v29.49l-58.98-29.49h58.98Z"/>
+          <path class="st5" d="M396.12,487.65l17.33-23.86-65.04-10.81,47.71,34.66Z"/>
+        </g>
+        <g id="Arm2" data-name="Arm">
+          <path class="st5" d="M425.61,466.22l-28.04,9.11,46.27,46.98-18.22-56.09Z"/>
+          <path class="st5" d="M396.12,487.65l17.33-23.86,30.38,58.52-47.71-34.66Z"/>
+        </g>
+        <g id="Arm3" data-name="Arm">
+          <path class="st5" d="M389.16,466.22l28.04,9.11-9.82-65.2-18.22,56.09Z"/>
+          <path class="st5" d="M425.61,466.22l-28.04,9.11,9.82-65.2,18.22,56.09Z"/>
+        </g>
+        <g id="Arm4" data-name="Arm">
+          <path class="st5" d="M389.16,466.22l28.04,9.11-46.27,46.98,18.22-56.09Z"/>
+          <path class="st5" d="M418.65,487.65l-17.33-23.86-30.38,58.52,47.71-34.66Z"/>
+        </g>
+      </g>
+      <g id="Pentagram1" data-name="Pentagram">
+        <g id="Arm5" data-name="Arm">
+          <path class="st11" d="M407.39,459.48v19.49l38.97-19.49h-38.97Z"/>
+          <path class="st11" d="M414.83,482.39l-11.45-15.76,42.98-7.14-31.53,22.91Z"/>
+        </g>
+        <g id="Arm6" data-name="Arm">
+          <path class="st11" d="M407.39,459.48v19.49l-38.97-19.49h38.97Z"/>
+          <path class="st11" d="M399.94,482.39l11.45-15.76-42.98-7.14,31.53,22.91Z"/>
+        </g>
+        <g id="Arm7" data-name="Arm">
+          <path class="st11" d="M419.43,468.23l-18.53,6.02,30.57,31.04-12.04-37.06Z"/>
+          <path class="st11" d="M399.94,482.39l11.45-15.76,20.07,38.67-31.53-22.91Z"/>
+        </g>
+        <g id="Arm8" data-name="Arm">
+          <path class="st11" d="M395.34,468.23l18.53,6.02-6.49-43.08-12.04,37.06Z"/>
+          <path class="st11" d="M419.43,468.23l-18.53,6.02,6.49-43.08,12.04,37.06Z"/>
+        </g>
+        <g id="Arm9" data-name="Arm">
+          <path class="st11" d="M395.34,468.23l18.53,6.02-30.57,31.04,12.04-37.06Z"/>
+          <path class="st11" d="M414.83,482.39l-11.45-15.76-20.07,38.67,31.53-22.91Z"/>
+        </g>
+      </g>
+    </g>
+    <g>
+      <g id="Delta_Crucis">
+        <g id="Pentagram2" data-name="Pentagram">
+          <g id="Arm10" data-name="Arm">
+            <path class="st5" d="M561.75,589.28v26.24l52.48-26.24h-52.48Z"/>
+            <path class="st5" d="M571.77,620.13l-15.42-21.23,57.88-9.62-42.46,30.85Z"/>
+          </g>
+          <g id="Arm11" data-name="Arm">
+            <path class="st5" d="M561.75,589.28v26.24l-52.48-26.24h52.48Z"/>
+            <path class="st5" d="M551.73,620.13l15.42-21.23-57.88-9.62,42.46,30.85Z"/>
+          </g>
+          <g id="Arm12" data-name="Arm">
+            <path class="st5" d="M577.97,601.06l-24.96,8.11,41.17,41.8-16.22-49.91Z"/>
+            <path class="st5" d="M551.73,620.13l15.42-21.23,27.03,52.08-42.46-30.85Z"/>
+          </g>
+          <g id="Arm13" data-name="Arm">
+            <path class="st5" d="M545.53,601.06l24.96,8.11-8.74-58.02-16.22,49.91Z"/>
+            <path class="st5" d="M577.97,601.06l-24.96,8.11,8.74-58.02,16.22,49.91Z"/>
+          </g>
+          <g id="Arm14" data-name="Arm">
+            <path class="st5" d="M545.53,601.06l24.96,8.11-41.17,41.8,16.22-49.91Z"/>
+            <path class="st5" d="M571.77,620.13l-15.42-21.23-27.03,52.08,42.46-30.85Z"/>
+          </g>
+        </g>
+        <g id="Pentagram3" data-name="Pentagram">
+          <g id="Arm15" data-name="Arm">
+            <path class="st11" d="M561.75,595.78v16.24l32.48-16.24h-32.48Z"/>
+            <path class="st11" d="M567.95,614.87l-9.54-13.14,35.82-5.95-26.27,19.09Z"/>
+          </g>
+          <g id="Arm16" data-name="Arm">
+            <path class="st11" d="M561.75,595.78v16.24l-32.48-16.24h32.48Z"/>
+            <path class="st11" d="M555.55,614.87l9.54-13.14-35.82-5.95,26.27,19.09Z"/>
+          </g>
+          <g id="Arm17" data-name="Arm">
+            <path class="st11" d="M571.79,603.07l-15.44,5.02,25.48,25.87-10.04-30.89Z"/>
+            <path class="st11" d="M555.55,614.87l9.54-13.14,16.73,32.23-26.27-19.09Z"/>
+          </g>
+          <g id="Arm18" data-name="Arm">
+            <path class="st11" d="M551.71,603.07l15.44,5.02-5.41-35.9-10.04,30.89Z"/>
+            <path class="st11" d="M571.79,603.07l-15.44,5.02,5.41-35.9,10.04,30.89Z"/>
+          </g>
+          <g id="Arm19" data-name="Arm">
+            <path class="st11" d="M551.71,603.07l15.44,5.02-25.48,25.87,10.04-30.89Z"/>
+            <path class="st11" d="M567.95,614.87l-9.54-13.14-16.73,32.23,26.27-19.09Z"/>
+          </g>
+        </g>
+      </g>
+      <g id="Beta_Crucis">
+        <g id="Pentagram4" data-name="Pentagram">
+          <g id="Arm20" data-name="Arm">
+            <path class="st5" d="M227.29,634.17v29.49l58.98-29.49h-58.98Z"/>
+            <path class="st5" d="M238.56,668.84l-17.33-23.86,65.04-10.81-47.71,34.66Z"/>
+          </g>
+          <g id="Arm21" data-name="Arm">
+            <path class="st5" d="M227.29,634.17v29.49l-58.98-29.49h58.98Z"/>
+            <path class="st5" d="M216.03,668.84l17.33-23.86-65.04-10.81,47.71,34.66Z"/>
+          </g>
+          <g id="Arm22" data-name="Arm">
+            <path class="st5" d="M245.52,647.41l-28.04,9.11,46.27,46.98-18.22-56.09Z"/>
+            <path class="st5" d="M216.03,668.84l17.33-23.86,30.38,58.52-47.71-34.66Z"/>
+          </g>
+          <g id="Arm23" data-name="Arm">
+            <path class="st5" d="M209.07,647.41l28.04,9.11-9.82-65.2-18.22,56.09Z"/>
+            <path class="st5" d="M245.52,647.41l-28.04,9.11,9.82-65.2,18.22,56.09Z"/>
+          </g>
+          <g id="Arm24" data-name="Arm">
+            <path class="st5" d="M209.07,647.41l28.04,9.11-46.27,46.98,18.22-56.09Z"/>
+            <path class="st5" d="M238.56,668.84l-17.33-23.86-30.38,58.52,47.71-34.66Z"/>
+          </g>
+        </g>
+        <g id="Pentagram5" data-name="Pentagram">
+          <g id="Arm25" data-name="Arm">
+            <path class="st11" d="M227.29,640.67v19.49l38.97-19.49h-38.97Z"/>
+            <path class="st11" d="M234.74,663.58l-11.45-15.76,42.98-7.14-31.53,22.91Z"/>
+          </g>
+          <g id="Arm26" data-name="Arm">
+            <path class="st11" d="M227.29,640.67v19.49l-38.97-19.49h38.97Z"/>
+            <path class="st11" d="M219.85,663.58l11.45-15.76-42.98-7.14,31.53,22.91Z"/>
+          </g>
+          <g id="Arm27" data-name="Arm">
+            <path class="st11" d="M239.34,649.42l-18.53,6.02,30.57,31.04-12.04-37.06Z"/>
+            <path class="st11" d="M219.85,663.58l11.45-15.76,20.07,38.67-31.53-22.91Z"/>
+          </g>
+          <g id="Arm28" data-name="Arm">
+            <path class="st11" d="M215.25,649.42l18.53,6.02-6.49-43.08-12.04,37.06Z"/>
+            <path class="st11" d="M239.34,649.42l-18.53,6.02,6.49-43.08,12.04,37.06Z"/>
+          </g>
+          <g id="Arm29" data-name="Arm">
+            <path class="st11" d="M215.25,649.42l18.53,6.02-30.57,31.04,12.04-37.06Z"/>
+            <path class="st11" d="M234.74,663.58l-11.45-15.76-20.07,38.67,31.53-22.91Z"/>
+          </g>
+        </g>
+      </g>
+    </g>
+    <g id="Alpha_Crucis">
+      <g id="Pentagram6" data-name="Pentagram">
+        <g id="Arm30" data-name="Arm">
+          <path class="st5" d="M407.39,681.93v32.74l65.47-32.74h-65.47Z"/>
+          <path class="st5" d="M419.89,720.41l-19.24-26.48,72.21-12-52.97,38.48Z"/>
+        </g>
+        <g id="Arm31" data-name="Arm">
+          <path class="st5" d="M407.39,681.93v32.74l-65.47-32.74h65.47Z"/>
+          <path class="st5" d="M394.88,720.41l19.24-26.48-72.21-12,52.97,38.48Z"/>
+        </g>
+        <g id="Arm32" data-name="Arm">
+          <path class="st5" d="M427.62,696.63l-31.13,10.12,51.36,52.15-20.23-62.27Z"/>
+          <path class="st5" d="M394.88,720.41l19.24-26.48,33.73,64.97-52.97-38.48Z"/>
+        </g>
+        <g id="Arm33" data-name="Arm">
+          <path class="st5" d="M387.15,696.63l31.13,10.12-10.9-72.38-20.23,62.27Z"/>
+          <path class="st5" d="M427.62,696.63l-31.13,10.12,10.9-72.38,20.23,62.27Z"/>
+        </g>
+        <g id="Arm34" data-name="Arm">
+          <path class="st5" d="M387.15,696.63l31.13,10.12-51.36,52.15,20.23-62.27Z"/>
+          <path class="st5" d="M419.89,720.41l-19.24-26.48-33.73,64.97,52.97-38.48Z"/>
+        </g>
+      </g>
+      <g id="Pentagram7" data-name="Pentagram">
+        <g id="Arm35" data-name="Arm">
+          <path class="st11" d="M407.39,688.43v22.73l45.47-22.73h-45.47Z"/>
+          <path class="st11" d="M416.07,715.16l-13.36-18.39,50.14-8.33-36.78,26.72Z"/>
+        </g>
+        <g id="Arm36" data-name="Arm">
+          <path class="st11" d="M407.39,688.43v22.73l-45.47-22.73h45.47Z"/>
+          <path class="st11" d="M398.7,715.16l13.36-18.39-50.14-8.33,36.78,26.72Z"/>
+        </g>
+        <g id="Arm37" data-name="Arm">
+          <path class="st11" d="M421.44,698.64l-21.62,7.02,35.67,36.22-14.05-43.24Z"/>
+          <path class="st11" d="M398.7,715.16l13.36-18.39,23.42,45.12-36.78-26.72Z"/>
+        </g>
+        <g id="Arm38" data-name="Arm">
+          <path class="st11" d="M393.34,698.64l21.62,7.02-7.57-50.27-14.05,43.24Z"/>
+          <path class="st11" d="M421.43,698.64l-21.62,7.02,7.57-50.27,14.05,43.24Z"/>
+        </g>
+        <g id="Arm39" data-name="Arm">
+          <path class="st11" d="M393.34,698.64l21.62,7.02-35.67,36.22,14.05-43.24Z"/>
+          <path class="st11" d="M416.07,715.16l-13.36-18.39-23.42,45.12,36.78-26.72Z"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

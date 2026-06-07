@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Laag_1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 760 760">
+  <!-- Generator: Adobe Illustrator 29.5.1, SVG Export Plug-In . SVG Version: 2.1.0 Build 141)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: none;
+      }
+
+      .st0, .st1, .st2 {
+        stroke: #000;
+        stroke-miterlimit: 10;
+      }
+
+      .st1 {
+        fill: #fff;
+      }
+
+      .st3 {
+        fill: #d21034;
+      }
+
+      .st2 {
+        fill: #063;
+      }
+
+      .st4 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <circle class="st0" cx="380" cy="380" r="379.98"/>
+    </clipPath>
+  </defs>
+  <g>
+    <g class="st4">
+      <path class="st1" d="M-209.63-13.09H969.63v786.17H-209.63V-13.09Z"/>
+      <path class="st2" d="M-209.63-13.09H380v786.17H-209.63V-13.09Z"/>
+    </g>
+    <circle class="st0" cx="380" cy="380" r="379.98"/>
+  </g>
+  <path class="st3" d="M559.61,281.73c-54.27-94.01-174.48-126.21-268.48-71.94-94.01,54.27-126.21,174.48-71.94,268.48,54.27,94.01,174.48,126.21,268.48,71.94,29.88-17.25,54.69-42.06,71.94-71.94-54.27,67.79-153.23,78.74-221.01,24.47-67.79-54.27-78.74-153.22-24.47-221.01,54.27-67.79,153.23-78.74,221.01-24.47,9.03,7.23,17.24,15.44,24.47,24.47M567.18,380l-177.78-57.76,109.87,151.22v-186.92l-109.87,151.22,177.78-57.76Z"/>
+</svg>

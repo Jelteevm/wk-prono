@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Laag_1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 760 760">
+  <!-- Generator: Adobe Illustrator 29.5.1, SVG Export Plug-In . SVG Version: 2.1.0 Build 141)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #fff;
+      }
+
+      .st1 {
+        fill: #e30a17;
+      }
+
+      .st2 {
+        fill: none;
+      }
+
+      .st3 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <circle class="st2" cx="380" cy="380" r="379.98"/>
+    </clipPath>
+  </defs>
+  <g class="st3">
+    <path class="st1" d="M-77.99-31.36h1215.93v810.62H-77.99V-31.36Z"/>
+    <path class="st0" d="M486.06,373.94l183.31-59.55-113.3,155.92v-192.74l113.3,155.92-183.31-59.55ZM498.56,482.31c-59.85,94.58-185.04,122.73-279.61,62.88-94.58-59.85-122.73-185.04-62.88-279.61,59.85-94.58,185.04-122.73,279.61-62.88,25.36,16.05,46.83,37.52,62.88,62.88-59.85-66.6-162.35-72.07-228.95-12.22-66.6,59.85-72.07,162.35-12.22,228.95,59.85,66.6,162.35,72.07,228.95,12.22,4.29-3.85,8.37-7.93,12.22-12.22Z"/>
+  </g>
+</svg>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Laag_1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 760 760">
+  <!-- Generator: Adobe Illustrator 29.5.1, SVG Export Plug-In . SVG Version: 2.1.0 Build 141)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #fff;
+      }
+
+      .st1 {
+        stroke-width: 42.67px;
+      }
+
+      .st1, .st2, .st3, .st4 {
+        stroke-miterlimit: 426.67;
+      }
+
+      .st1, .st3 {
+        stroke: #e4002b;
+      }
+
+      .st5 {
+        fill: none;
+      }
+
+      .st2 {
+        stroke-width: 106.67px;
+      }
+
+      .st2, .st4 {
+        stroke: #fff;
+      }
+
+      .st6 {
+        clip-path: url(#clippath-1);
+      }
+
+      .st3, .st4 {
+        stroke-width: 64px;
+      }
+
+      .st7 {
+        fill: #012169;
+      }
+
+      .st8 {
+        clip-path: url(#clippath-2);
+      }
+
+      .st9 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <circle class="st5" cx="380" cy="380" r="379.98"/>
+    </clipPath>
+    <clipPath id="clippath-1">
+      <rect class="st5" x="-87.68" y="-7.4" width="795.35" height="397.68"/>
+    </clipPath>
+    <clipPath id="clippath-2">
+      <path class="st5" d="M-87.68-7.4v198.84h795.35v198.84L-87.68-7.4ZM707.67-7.4h-397.68v397.68H-87.68L707.67-7.4Z"/>
+    </clipPath>
+  </defs>
+  <g class="st9">
+    <g>
+      <rect class="st7" x="-87.68" y="-7.4" width="1590.7" height="795.35"/>
+      <g class="st6">
+        <path class="st4" d="M-87.68-7.4l795.35,397.68M707.67-7.4L-87.68,390.27"/>
+      </g>
+      <g class="st8">
+        <path class="st1" d="M-87.68-7.4l795.35,397.68M707.67-7.4L-87.68,390.27"/>
+      </g>
+      <path class="st2" d="M310-7.4v397.68M-87.68,191.44h795.35"/>
+      <path class="st3" d="M310-7.4v397.68M-87.68,191.44h795.35"/>
+    </g>
+    <g id="Comwlth">
+      <path id="Star7" class="st0" d="M297.57,469.81l23.01,71.53,70.27-26.61-41.58,62.59,64.62,38.35-74.86,6.51,10.31,74.43-51.76-54.46-51.76,54.46,10.31-74.43-74.86-6.51,64.62-38.35-41.58-62.59,70.27,26.61,23.01-71.53Z"/>
+    </g>
+    <g id="_αCrucis" data-name="αCrucis">
+      <path id="Star71" data-name="Star7" class="st0" d="M723.02,624.88l10.96,34.06,33.46-12.67-19.8,29.8,30.77,18.26-35.65,3.1,4.91,35.44-24.65-25.94-24.65,25.94,4.91-35.44-35.65-3.1,30.77-18.26-19.8-29.8,33.46,12.67,10.96-34.06Z"/>
+    </g>
+    <g id="_βCrucis" data-name="βCrucis">
+      <path id="Star72" data-name="Star7" class="st0" d="M599.02,420.45l10.96,34.06,33.46-12.67-19.8,29.8,30.77,18.26-35.65,3.1,4.91,35.44-24.65-25.94-24.65,25.94,4.91-35.44-35.65-3.1,30.77-18.26-19.8-29.8,33.46,12.67,10.96-34.06Z"/>
+    </g>
+    <g id="_γCrucis" data-name="γCrucis">
+      <path id="Star73" data-name="Star7" class="st0" d="M811.53,151.05l10.96,34.06,33.46-12.67-19.8,29.8,30.77,18.26-35.65,3.1,4.91,35.44-24.65-25.94-24.65,25.94,4.91-35.44-35.65-3.1,30.77-18.26-19.8-29.8,33.46,12.67,10.96-34.06Z"/>
+    </g>
+    <g id="_δCrucis" data-name="δCrucis">
+      <path id="Star74" data-name="Star7" class="st0" d="M982.15,359.88l10.96,34.06,33.46-12.67-19.8,29.8,30.77,18.26-35.65,3.1,4.91,35.44-24.65-25.94-24.65,25.94,4.91-35.44-35.65-3.1,30.77-18.26-19.8-29.8,33.46,12.67,10.96-34.06Z"/>
+    </g>
+    <g id="_εCrucis" data-name="εCrucis">
+      <path id="Star5" class="st0" d="M884.94,519.43l8.66,21.22,22.86,1.68-17.51,14.79,5.47,22.26-19.48-12.08-19.48,12.08,5.47-22.26-17.51-14.79,22.86-1.68,8.66-21.22Z"/>
+    </g>
+  </g>
+</svg>

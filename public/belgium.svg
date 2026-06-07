@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Laag_1" data-name="Laag 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 760 760">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: #ef3340;
+      }
+
+      .cls-3 {
+        fill: #fdda25;
+      }
+
+      .cls-4 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <circle class="cls-1" cx="380" cy="380" r="380"/>
+    </clipPath>
+  </defs>
+  <g class="cls-4">
+    <path class="cls-2" d="M-70-10h900v780H-70V-10Z"/>
+    <path class="cls-3" d="M-70-10h600v780H-70V-10Z"/>
+    <path d="M-70-10H230v780H-70V-10Z"/>
+  </g>
+</svg>

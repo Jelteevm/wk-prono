@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Laag_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 760 760">
+  <!-- Generator: Adobe Illustrator 29.5.1, SVG Export Plug-In . SVG Version: 2.1.0 Build 141)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #fff;
+      }
+
+      .st1 {
+        fill: #002395;
+      }
+
+      .st2 {
+        fill: #fecb00;
+      }
+    </style>
+  </defs>
+  <circle class="st1" cx="380" cy="380" r="379.98"/>
+  <path class="st2" d="M226.1,136.15h410.97v461.15L226.1,136.15Z"/>
+  <g id="g">
+    <path id="s" class="st0" d="M141.18,212.61l22.95-70.63,22.95,70.63-60.08-43.65h74.26l-60.08,43.65Z"/>
+    <path id="s1" data-name="s" class="st0" d="M192.55,263.98l22.95-70.63,22.95,70.63-60.08-43.65h74.26l-60.08,43.65Z"/>
+    <path id="s2" data-name="s" class="st0" d="M243.92,315.35l22.95-70.63,22.95,70.63-60.08-43.65h74.26l-60.08,43.65Z"/>
+  </g>
+  <g id="g1" data-name="g">
+    <path id="s3" data-name="s" class="st0" d="M295.29,366.72l22.95-70.63,22.95,70.63-60.08-43.65h74.26l-60.08,43.65Z"/>
+    <path id="s4" data-name="s" class="st0" d="M346.67,418.1l22.95-70.63,22.95,70.63-60.08-43.65h74.26l-60.08,43.65Z"/>
+    <path id="s5" data-name="s" class="st0" d="M398.04,469.47l22.95-70.63,22.95,70.63-60.08-43.65h74.26l-60.08,43.65Z"/>
+  </g>
+  <g id="g2" data-name="g">
+    <path id="s6" data-name="s" class="st0" d="M449.41,520.84l22.95-70.63,22.95,70.63-60.08-43.65h74.26l-60.08,43.65Z"/>
+    <path id="s7" data-name="s" class="st0" d="M500.78,572.21l22.95-70.63,22.95,70.63-60.08-43.65h74.26l-60.08,43.65Z"/>
+    <path id="s8" data-name="s" class="st0" d="M552.15,623.58l22.95-70.63,22.95,70.63-60.08-43.65h74.26l-60.08,43.65Z"/>
+  </g>
+</svg>
