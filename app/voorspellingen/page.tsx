@@ -2,6 +2,8 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { createClient } from "@supabase/supabase-js";
 import Menu from "../components/menu";
+import PlayerSearch from "../components/player-search";
+
 
 type Match = {
   id: number;
@@ -56,6 +58,13 @@ export default async function VoorspellingenPage({
     .from("teams")
     .select("id, name, flag")
     .order("name", { ascending: true });
+
+    const { data: playersData } = await supabase
+  .from("players")
+  .select("name")
+  .order("name", { ascending: true });
+
+const players = playersData || [];
 
   const { data: deadlineRows } = await supabase
     .from("speeldag_deadlines")
@@ -334,13 +343,10 @@ export default async function VoorspellingenPage({
               <label className="mb-2 block text-sm font-black text-gray-500">
                 Topschutter — 4 punten
               </label>
-              <input
-                name="top_scorer"
-                type="text"
-                defaultValue={topScorer}
-                placeholder="Bijvoorbeeld Mbappé"
-                className="w-full rounded-xl border p-3 text-center text-lg font-bold"
-              />
+              <PlayerSearch
+  players={players}
+  defaultValue={topScorer}
+/>
             </div>
           )}
 
