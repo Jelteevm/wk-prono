@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { createClient } from "@supabase/supabase-js";
+import Menu from "../components/menu";
 
 export default async function ProfielPage() {
   const cookieStore = await cookies();
@@ -11,49 +12,61 @@ export default async function ProfielPage() {
   );
 
   let username = "Speler";
+  let points = 0;
+  let isAdmin = false;
+  let avatarUrl = "";
 
   if (userId) {
     const { data: profile } = await supabase
       .from("profiles")
-      .select("username")
+      .select("username, points, is_admin, avatar_url")
       .eq("id", userId)
       .single();
 
-    if (profile?.username) {
-      username = profile.username;
-    }
+    username = profile?.username || "Speler";
+    points = profile?.points || 0;
+    isAdmin = profile?.is_admin ?? false;
+    avatarUrl = profile?.avatar_url || "";
   }
 
   return (
-    <main
-      className="min-h-screen px-6 py-8 text-white"
-      style={{ backgroundColor: "#A30000" }}
-    >
+    <main className="min-h-screen px-6 py-8 text-white" style={{ backgroundColor: "#A30000" }}>
       <div className="mx-auto max-w-md">
-        <h1 className="mb-6 text-3xl font-black">
-          👤 Mijn profiel
-        </h1>
+        <div style={{ marginBottom: 20 }}>
+          <Menu username={username} isAdmin={isAdmin} avatarUrl={avatarUrl} />
+        </div>
 
-        <div className="rounded-2xl bg-white p-6 text-black">
-          <div className="mb-4">
-            <strong>Naam:</strong> {username}
+        <h1 className="mb-6 text-center text-3xl font-black">👤 Mijn profiel</h1>
+
+        <div className="rounded-2xl bg-white p-6 text-center text-black">
+          <div style={{ width: 120, height: 120, borderRadius: "50%", backgroundColor: "#eee", margin: "0 auto 18px", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 44, fontWeight: 900 }}>
+            {avatarUrl ? (
+              <img src={avatarUrl} alt={username} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            ) : (
+              username.charAt(0).toUpperCase()
+            )}
           </div>
 
-          <div className="mb-4">
-            <strong>Punten:</strong> 0
+          <div className="mb-4 text-xl font-black">{username}</div>
+
+          <div className="mb-6 font-bold">
+            Punten: {points}
           </div>
 
-          <div className="mb-6">
-            <strong>Positie:</strong> #1
-          </div>
+          <form action="/api/profile/avatar" method="POST" encType="multipart/form-data" className="mb-6">
+            <input
+              name="avatar"
+              type="file"
+              accept="image/*"
+              className="mb-4 w-full rounded-xl border p-3 text-black"
+            />
 
-          <form action="/api/logout" method="POST">
             <button
               type="submit"
               className="w-full rounded-xl py-4 text-xl font-bold text-black"
               style={{ backgroundColor: "#FCEA10" }}
             >
-              🚪 Uitloggen
+              Foto uploaden
             </button>
           </form>
         </div>

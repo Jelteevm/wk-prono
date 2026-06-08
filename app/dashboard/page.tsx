@@ -19,6 +19,7 @@ type PublicPrediction = {
 
 type Match = {
   id: number;
+  speeldag: string | null;
   match_date: string;
   match_time: string | null;
   home_team: string;
@@ -28,6 +29,11 @@ type Match = {
   city: string | null;
   home_flag: string | null;
   away_flag: string | null;
+};
+
+type Deadline = {
+  speeldag: string;
+  deadline: string;
 };
 
 export default async function DashboardPage({
@@ -65,6 +71,12 @@ export default async function DashboardPage({
 
     predictions = predictionData || [];
   }
+
+  const { data: deadlineRows } = await supabase
+    .from("speeldag_deadlines")
+    .select("speeldag, deadline");
+
+  const deadlines: Deadline[] = deadlineRows || [];
 
   const { data: dateRows } = await supabase
     .from("matches")
@@ -119,6 +131,16 @@ export default async function DashboardPage({
     return allPredictions.filter(
       (prediction) => prediction.match_id === matchId
     );
+  }
+
+  function isDeadlinePassed(speeldag: string | null) {
+    if (!speeldag) return false;
+
+    const deadline = deadlines.find((item) => item.speeldag === speeldag);
+
+    if (!deadline?.deadline) return false;
+
+    return new Date() > new Date(deadline.deadline);
   }
 
   function formatDate(date: string) {
@@ -259,6 +281,7 @@ export default async function DashboardPage({
           {matches.map((match) => {
             const prediction = getPrediction(match.id);
             const publicPredictions = getPublicPredictions(match.id);
+            const canViewPredictions = isDeadlinePassed(match.speeldag);
 
             return (
               <div
@@ -353,7 +376,7 @@ export default async function DashboardPage({
                       borderTop: "1px solid rgba(0,0,0,0.08)",
                     }}
                   >
-                    Bekijk de pronostieken ▼
+                    Bekijk de pronostiek van anderen ▼
                   </summary>
 
                   <div
@@ -363,7 +386,19 @@ export default async function DashboardPage({
                       padding: 14,
                     }}
                   >
-                    {publicPredictions.length === 0 && (
+                    {!canViewPredictions && (
+                      <div
+                        style={{
+                          textAlign: "center",
+                          fontWeight: 900,
+                          color: "#555",
+                        }}
+                      >
+                        🔒 Pronostieken zichtbaar na de deadline.
+                      </div>
+                    )}
+
+                    {canViewPredictions && publicPredictions.length === 0 && (
                       <div
                         style={{
                           textAlign: "center",
@@ -375,46 +410,47 @@ export default async function DashboardPage({
                       </div>
                     )}
 
-                    {publicPredictions.map((item, index) => (
-                      <div
-                        key={`${item.match_id}-${index}`}
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          gap: 10,
-                          padding: "10px 0",
-                          borderBottom:
-                            index === publicPredictions.length - 1
-                              ? "none"
-                              : "1px solid rgba(0,0,0,0.15)",
-                        }}
-                      >
+                    {canViewPredictions &&
+                      publicPredictions.map((item, index) => (
                         <div
+                          key={`${item.match_id}-${index}`}
                           style={{
-                            fontWeight: 900,
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            gap: 10,
+                            padding: "10px 0",
+                            borderBottom:
+                              index === publicPredictions.length - 1
+                                ? "none"
+                                : "1px solid rgba(0,0,0,0.15)",
                           }}
                         >
-                          {item.username}
-                        </div>
+                          <div
+                            style={{
+                              fontWeight: 900,
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {item.username}
+                          </div>
 
-                        <div
-                          style={{
-                            fontWeight: 900,
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          {item.home_score} - {item.away_score}
-                          {"  "}
-                          <span style={{ color: "#777" }}>
-                            ({item.result_pick || "?"})
-                          </span>
+                          <div
+                            style={{
+                              fontWeight: 900,
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {item.home_score} - {item.away_score}
+                            {"  "}
+                            <span style={{ color: "#777" }}>
+                              ({item.result_pick || "?"})
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
                   </div>
                 </details>
               </div>
@@ -443,7 +479,7 @@ export default async function DashboardPage({
               textDecoration: "none",
             }}
           >
-            ⚽ Voorspellingen aanpassen
+            ⚽ Mijn pronostiek invullen
           </Link>
 
           <Link
