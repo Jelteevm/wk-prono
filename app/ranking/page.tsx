@@ -6,6 +6,7 @@ type Profile = {
   id: string;
   username: string;
   points: number;
+  avatar_url: string | null;
 };
 
 export default async function RankingPage() {
@@ -19,21 +20,23 @@ export default async function RankingPage() {
 
   let username = "Speler";
   let isAdmin = false;
+  let avatarUrl = "";
 
   if (userId) {
     const { data: profile } = await supabase
       .from("profiles")
-      .select("username, is_admin")
+      .select("username, is_admin, avatar_url")
       .eq("id", userId)
       .single();
 
     username = profile?.username || "Speler";
     isAdmin = profile?.is_admin ?? false;
+    avatarUrl = profile?.avatar_url || "";
   }
 
   const { data: profiles } = await supabase
     .from("profiles")
-    .select("id, username, points")
+    .select("id, username, points, avatar_url")
     .order("points", { ascending: false });
 
   const ranking: Profile[] = profiles || [];
@@ -45,7 +48,11 @@ export default async function RankingPage() {
     >
       <div className="mx-auto max-w-md">
         <div style={{ marginBottom: 20 }}>
-          <Menu username={username} isAdmin={isAdmin} />
+          <Menu
+            username={username}
+            isAdmin={isAdmin}
+            avatarUrl={avatarUrl}
+          />
         </div>
 
         <h1 className="mb-6 text-center text-3xl font-black">
@@ -59,11 +66,44 @@ export default async function RankingPage() {
               className="flex items-center justify-between rounded-2xl bg-white p-5 text-black shadow-lg"
             >
               <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-xl font-black">
+                <div
+                  className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-xl font-black"
+                >
                   #{index + 1}
                 </div>
 
-                <div className="text-xl font-black">{player.username}</div>
+                <div
+                  style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: "50%",
+                    backgroundColor: "#eee",
+                    overflow: "hidden",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontWeight: 900,
+                    flexShrink: 0,
+                  }}
+                >
+                  {player.avatar_url ? (
+                    <img
+                      src={player.avatar_url}
+                      alt={player.username}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
+                  ) : (
+                    player.username.charAt(0).toUpperCase()
+                  )}
+                </div>
+
+                <div className="text-xl font-black">
+                  {player.username}
+                </div>
               </div>
 
               <div className="text-lg font-black">
