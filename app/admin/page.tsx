@@ -140,6 +140,15 @@ export default async function AdminPage({
             ⚽ Uitslagen synchroniseren
           </button>
         </form>
+        <form action="/api/admin/sync-players" method="POST">
+  <button
+    type="submit"
+    className="mb-6 w-full rounded-xl py-4 text-xl font-bold text-black"
+    style={{ backgroundColor: "#38BDF8" }}
+  >
+    👥 Spelers synchroniseren
+  </button>
+</form>
 
         {params.saved && (
           <p className="mb-4 rounded-xl bg-green-100 p-3 text-center font-bold text-green-800">

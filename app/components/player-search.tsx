@@ -14,10 +14,10 @@ export default function PlayerSearch({
   defaultValue?: string;
 }) {
   const [query, setQuery] = useState(defaultValue);
-  const [selected, setSelected] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   const suggestions = useMemo(() => {
-    if (selected) return [];
+    if (!showSuggestions) return [];
     if (query.trim().length < 2) return [];
 
     return players
@@ -25,11 +25,11 @@ export default function PlayerSearch({
         player.name.toLowerCase().includes(query.toLowerCase())
       )
       .slice(0, 8);
-  }, [query, players, selected]);
+  }, [query, players, showSuggestions]);
 
   function choosePlayer(name: string) {
     setQuery(name);
-    setSelected(true);
+    setShowSuggestions(false);
   }
 
   return (
@@ -40,7 +40,7 @@ export default function PlayerSearch({
         value={query}
         onChange={(event) => {
           setQuery(event.target.value);
-          setSelected(false);
+          setShowSuggestions(true);
         }}
         placeholder="Typ bv. Mba..."
         autoComplete="off"
