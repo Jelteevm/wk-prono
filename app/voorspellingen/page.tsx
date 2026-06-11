@@ -4,7 +4,6 @@ import { createClient } from "@supabase/supabase-js";
 import Menu from "../components/menu";
 import PlayerSearch from "../components/player-search";
 
-
 type Match = {
   id: number;
   speeldag: string | null;
@@ -59,12 +58,10 @@ export default async function VoorspellingenPage({
     .select("id, name, flag")
     .order("name", { ascending: true });
 
-    const { data: playersData } = await supabase
-  .from("players")
-  .select("name")
-  .order("name", { ascending: true });
-
-const players = playersData || [];
+  const { data: playersData } = await supabase
+    .from("players")
+    .select("name")
+    .order("name", { ascending: true });
 
   const { data: deadlineRows } = await supabase
     .from("speeldag_deadlines")
@@ -72,6 +69,7 @@ const players = playersData || [];
 
   const allMatches: Match[] = allMatchesData || [];
   const teams: Team[] = teamsData || [];
+  const players = playersData || [];
   const deadlines: Deadline[] = deadlineRows || [];
 
   const now = new Date();
@@ -108,9 +106,7 @@ const players = playersData || [];
   );
 
   const selectedDeadlineRow = getDeadlineForSpeeldag(selectedSpeeldag);
-  const deadline = selectedDeadlineRow?.deadline
-    ? new Date(selectedDeadlineRow.deadline)
-    : null;
+  const deadline = selectedDeadlineRow?.deadline || "";
 
   let username = "Speler";
   let isAdmin = false;
@@ -175,15 +171,19 @@ const players = playersData || [];
     );
   }
 
-  function formatDeadline(date: Date) {
+  function formatDeadline(deadlineValue: string) {
+    const date = new Date(deadlineValue);
+
     return (
       date.toLocaleDateString("nl-BE", {
+        timeZone: "Europe/Brussels",
         weekday: "long",
         day: "numeric",
         month: "long",
       }) +
       " om " +
       date.toLocaleTimeString("nl-BE", {
+        timeZone: "Europe/Brussels",
         hour: "2-digit",
         minute: "2-digit",
       })
@@ -343,10 +343,8 @@ const players = playersData || [];
               <label className="mb-2 block text-sm font-black text-gray-500">
                 Topschutter — 4 punten
               </label>
-              <PlayerSearch
-  players={players}
-  defaultValue={topScorer}
-/>
+
+              <PlayerSearch players={players} defaultValue={topScorer} />
             </div>
           )}
 
