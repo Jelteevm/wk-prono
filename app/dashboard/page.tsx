@@ -87,7 +87,12 @@ export default async function DashboardPage({
     new Set((dateRows || []).map((row) => row.match_date))
   );
 
-  const selectedDate = params.date || dates[0] || "";
+  const todayBelgium = new Date().toLocaleDateString("sv-SE", {
+  timeZone: "Europe/Brussels",
+});
+
+const selectedDate =
+  params.date || (dates.includes(todayBelgium) ? todayBelgium : dates[0]) || "";
 
   const { data: matchData } = await supabase
     .from("matches")
@@ -356,6 +361,7 @@ export default async function DashboardPage({
                       Jouw prono
                     </div>
                   </div>
+                  
 
                   <div style={{ textAlign: "center" }}>
                     {renderFlag(match.away_flag, match.away_team)}
