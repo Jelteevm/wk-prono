@@ -52,17 +52,19 @@ export default async function DashboardPage({
 
   let username = "Speler";
   let isAdmin = false;
+  let avatarUrl = "";
   let predictions: Prediction[] = [];
 
   if (userId) {
     const { data: profile } = await supabase
       .from("profiles")
-      .select("username, is_admin")
+      .select("username, is_admin, avatar_url")
       .eq("id", userId)
       .single();
 
     if (profile?.username) username = profile.username;
     isAdmin = profile?.is_admin ?? false;
+    avatarUrl = profile?.avatar_url || "";
 
     const { data: predictionData } = await supabase
       .from("predictions")
@@ -223,7 +225,7 @@ const selectedDate =
     >
       <div style={{ maxWidth: 430, margin: "0 auto" }}>
         <div style={{ marginBottom: 28 }}>
-          <Menu username={username} isAdmin={isAdmin} />
+          <Menu username={username} isAdmin={isAdmin} avatarUrl={avatarUrl} />
         </div>
 
         <details style={{ marginBottom: 20 }}>
