@@ -102,6 +102,13 @@ const selectedDate =
 
   const matches: Match[] = matchData || [];
   const matchIds = matches.map((match) => match.id);
+  const { data: resultRows } =
+  matchIds.length > 0
+    ? await supabase
+        .from("match_results")
+        .select("match_id, home_score, away_score")
+        .in("match_id", matchIds)
+    : { data: [] };
 
   const { data: allPredictionRows } =
     matchIds.length > 0
@@ -137,6 +144,11 @@ const selectedDate =
       (prediction) => prediction.match_id === matchId
     );
   }
+  function getResult(matchId: number) {
+  return resultRows?.find(
+    (result) => result.match_id === matchId
+  );
+}
 
   function isDeadlinePassed(speeldag: string | null) {
     if (!speeldag) return false;
@@ -287,6 +299,7 @@ const selectedDate =
             const prediction = getPrediction(match.id);
             const publicPredictions = getPublicPredictions(match.id);
             const canViewPredictions = isDeadlinePassed(match.speeldag);
+            const result = getResult(match.id);
 
             return (
               <div
@@ -449,11 +462,36 @@ const selectedDate =
                               whiteSpace: "nowrap",
                             }}
                           >
-                            {item.home_score} - {item.away_score}
-                            {"  "}
-                            <span style={{ color: "#777" }}>
-                              ({item.result_pick || "?"})
-                            </span>
+                           <span
+                            style={{
+                             color:
+                              result &&
+                              item.home_score === result.home_score &&
+                              item.away_score === result.away_score
+                                ? "#16a34a"
+                                : "black",
+                          }}
+>
+  {item.home_score} - {item.away_score}
+</span>
+{"  "}
+<span
+                             style={{
+                              color:
+                                result &&
+                               item.result_pick ===
+                                 (result.home_score > result.away_score
+                                  ? "1"
+                                  : result.home_score < result.away_score
+                                  ? "2"
+                                  : "X")
+                                  ? "#16a34a"
+                                  : "#777",
+  }}
+>
+  ({item.result_pick || "?"})
+</span>
+
                           </div>
                         </div>
                       ))}
