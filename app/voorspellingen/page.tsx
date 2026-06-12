@@ -110,6 +110,7 @@ export default async function VoorspellingenPage({
 
   let username = "Speler";
   let isAdmin = false;
+  let avatarUrl = "";
   let existingPredictions: any[] = [];
   let worldCupWinner = "";
   let topScorer = "";
@@ -117,12 +118,13 @@ export default async function VoorspellingenPage({
   if (userId) {
     const { data: profile } = await supabase
       .from("profiles")
-      .select("username, is_admin, world_cup_winner, top_scorer")
+      .select("username, is_admin, avatar_url, world_cup_winner, top_scorer")
       .eq("id", userId)
       .single();
 
     username = profile?.username || "Speler";
     isAdmin = profile?.is_admin ?? false;
+    avatarUrl = profile?.avatar_url || "";
     worldCupWinner = profile?.world_cup_winner || "";
     topScorer = profile?.top_scorer || "";
 
@@ -198,7 +200,11 @@ export default async function VoorspellingenPage({
       >
         <div className="mx-auto max-w-md">
           <div style={{ marginBottom: 20 }}>
-            <Menu username={username} isAdmin={isAdmin} />
+            <Menu
+              username={username}
+              isAdmin={isAdmin}
+              avatarUrl={avatarUrl}
+            />
           </div>
 
           <h1 className="mb-8 text-center text-3xl font-black">
@@ -234,7 +240,7 @@ export default async function VoorspellingenPage({
     >
       <div className="mx-auto max-w-md">
         <div style={{ marginBottom: 20 }}>
-          <Menu username={username} isAdmin={isAdmin} />
+          <Menu username={username} isAdmin={isAdmin} avatarUrl={avatarUrl} />
         </div>
 
         <form action="/api/predictions" method="POST">
