@@ -338,7 +338,10 @@ const selectedDate =
                 <div
                   style={{
                     color: "black",
-                    padding: 16,
+                    paddingTop: 16,
+                    paddingBottom: 20,
+                    paddingLeft: 16,
+                    paddingRight: 16,
                     display: "grid",
                     gridTemplateColumns: "1fr 1fr 1fr",
                     alignItems: "center",
@@ -350,15 +353,36 @@ const selectedDate =
                   </div>
 
                   <div style={{ textAlign: "center" }}>
-                    <div
-                      style={{
-                        fontSize: 18,
-                        fontWeight: 900,
-                        marginBottom: 6,
-                      }}
-                    >
-                      {match.match_time || ""}
-                    </div>
+                        {result ? (
+  <div
+    style={{
+      display: "inline-block",
+      backgroundColor: "#FCEA10",
+      color: "black",
+      borderRadius: 2,
+      padding: "8px 12px",
+      marginTop: -20,
+      marginBottom: 8,
+      fontWeight: 900,
+      
+    }}
+  >
+    <div style={{ fontSize: 12 }}>Eindstand</div>
+    <div style={{ fontSize: 24 }}>
+      {result.home_score} - {result.away_score}
+    </div>
+  </div>
+) : (
+  <div
+    style={{
+      fontSize: 18,
+      fontWeight: 900,
+      marginBottom: 6,
+    }}
+  >
+    {match.match_time || ""}
+  </div>
+)}
 
                     <div
                       style={{
