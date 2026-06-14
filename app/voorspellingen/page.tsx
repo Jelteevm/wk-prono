@@ -66,7 +66,9 @@ export default async function VoorspellingenPage({
   const { data: deadlineRows } = await supabase
     .from("speeldag_deadlines")
     .select("speeldag, deadline");
-
+const { data: resultRows } = await supabase
+  .from("match_results")
+  .select("match_id, home_score, away_score");
   const allMatches: Match[] = allMatchesData || [];
   const teams: Team[] = teamsData || [];
   const players = playersData || [];
@@ -172,6 +174,25 @@ export default async function VoorspellingenPage({
       />
     );
   }
+
+  function getGroupResults(groupName: string | null) {
+  if (!groupName) return [];
+
+  return allMatches
+    .filter((m) => m.group_name === groupName)
+    .map((m) => {
+      const result = resultRows?.find(
+        (r) => r.match_id === m.id
+      );
+
+      return {
+        home_team: m.home_team,
+        away_team: m.away_team,
+        result,
+      };
+    })
+    .filter((m) => m.result);
+}
 
   function formatDeadline(deadlineValue: string) {
     const date = new Date(deadlineValue);
@@ -383,32 +404,105 @@ export default async function VoorspellingenPage({
                   }}
                 >
                   <div
-                    style={{
-                      backgroundColor: "#FCEA10",
-                      color: "black",
-                      padding: "10px 14px",
-                      display: "grid",
-                      gridTemplateColumns: "1fr auto",
-                      alignItems: "center",
-                      gap: 10,
-                      fontWeight: 900,
-                    }}
-                  >
-                    <div style={{ fontSize: 14, lineHeight: 1.25 }}>
-                      🏟️ {match.stadium || "Stadion nog niet gekend"},{" "}
-                      {match.city || "stad nog niet gekend"}
-                    </div>
+  style={{
+    backgroundColor: "#FCEA10",
+    color: "black",
+    padding: "10px 14px",
+    display: "grid",
+    gridTemplateColumns: "1fr auto",
+    alignItems: "center",
+    gap: 10,
+    fontWeight: 900,
+  }}
+>
+  <div style={{ fontSize: 14, lineHeight: 1.25 }}>
+    🏟️ {match.stadium || "Stadion nog niet gekend"},{" "}
+    {match.city || "stad nog niet gekend"}
+  </div>
 
-                    <div style={{ fontSize: 15, whiteSpace: "nowrap" }}>
-                      {match.group_name || ""}
-                    </div>
-                  </div>
+  <details style={{ position: "relative" }}>
+  <summary
+    style={{
+      listStyle: "none",
+      cursor: "pointer",
+      fontSize: 15,
+      whiteSpace: "nowrap",
+    }}
+  >
+    {match.group_name || ""} ▼
+  </summary>
+
+  <div
+    style={{
+      position: "absolute",
+      right: 0,
+      top: 30,
+      width: 290,
+      backgroundColor: "#fff8b8",
+      color: "black",
+      border: "2px solid #FCEA10",
+      borderRadius: 16,
+      padding: 14,
+      zIndex: 999,
+      boxShadow: "0 8px 20px rgba(0,0,0,0.25)",
+    }}
+  >
+    <div
+      style={{
+        fontSize: 18,
+        fontWeight: 900,
+        marginBottom: 10,
+        textAlign: "center",
+      }}
+    >
+      Uitslagen {match.group_name}
+    </div>
+
+    {getGroupResults(match.group_name).length === 0 ? (
+      <div style={{ textAlign: "center", fontWeight: 800 }}>
+        Nog geen uitslagen.
+      </div>
+    ) : (
+      getGroupResults(match.group_name).map((item, index) => (
+        <div
+          key={index}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr auto 1fr",
+            gap: 8,
+            alignItems: "center",
+            padding: "8px 0",
+            borderBottom:
+              index === getGroupResults(match.group_name).length - 1
+                ? "none"
+                : "1px solid rgba(0,0,0,0.15)",
+            fontSize: 13,
+            fontWeight: 900,
+          }}
+        >
+          <div style={{ textAlign: "right" }}>{item.home_team}</div>
+          <div
+  style={{
+    fontSize: 18,
+    textAlign: "center",
+    fontWeight: 900,
+  }}
+>
+  {item.result?.home_score} - {item.result?.away_score}
+</div>
+          <div>{item.away_team}</div>
+        </div>
+      ))
+    )}
+  </div>
+</details>
+</div>
 
                   <div className="p-6">
                     <div
                       style={{
                         display: "grid",
-                        gridTemplateColumns: "1fr auto 1fr",
+                        gridTemplateColumns: "1fr 80px 1fr",
                         alignItems: "center",
                         gap: 12,
                         marginBottom: 12,
