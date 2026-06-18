@@ -51,29 +51,119 @@ export default function Menu({
           boxShadow: "0 0 25px rgba(0,0,0,0.25)",
         }}
       >
-        <Link href="/profiel" style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 34, paddingBottom: 22, borderBottom: "2px solid rgba(0,0,0,0.18)", color: "#020A2D", textDecoration: "none" }}>
-          <div style={{ width: 62, height: 62, borderRadius: "50%", backgroundColor: "white", color: "black", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 900, flexShrink: 0, overflow: "hidden" }}>
+        <Link
+          href="/profiel"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 16,
+            marginBottom: 34,
+            paddingBottom: 22,
+            borderBottom: "2px solid rgba(0,0,0,0.18)",
+            color: "#020A2D",
+            textDecoration: "none",
+          }}
+        >
+          <div
+            style={{
+              width: 62,
+              height: 62,
+              borderRadius: "50%",
+              backgroundColor: "white",
+              color: "black",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 28,
+              fontWeight: 900,
+              flexShrink: 0,
+              overflow: "hidden",
+            }}
+          >
             {avatarUrl ? (
-              <img src={avatarUrl} alt={username} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <img
+                src={avatarUrl}
+                alt={username}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+              />
             ) : (
               initial
             )}
           </div>
 
-          <div style={{ fontSize: 28, fontWeight: 900, lineHeight: 1.1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+          <div
+            style={{
+              fontSize: 28,
+              fontWeight: 900,
+              lineHeight: 1.1,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
             {username}
           </div>
         </Link>
 
-        <nav style={{ display: "flex", flexDirection: "column", gap: 22 }}>
-          <Link href="/dashboard" style={linkStyle}>OVERZICHT</Link>
-          <Link href="/voorspellingen" style={linkStyle}>VOORSPELLINGEN</Link>
-          <Link href="/ranking" style={linkStyle}>RANKING</Link>
-          {isAdmin && <Link href="/admin" style={linkStyle}>ADMIN</Link>}
+        <nav
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 22,
+          }}
+        >
+          <Link href="/dashboard" style={linkStyle}>
+            OVERZICHT
+          </Link>
+
+          <Link href="/voorspellingen" style={linkStyle}>
+            VOORSPELLINGEN
+          </Link>
+
+          <Link href="/ranking" style={linkStyle}>
+            RANKING
+          </Link>
+
+          <Link href="/reglement" style={linkStyle}>
+            REGLEMENT
+          </Link>
+
+          {isAdmin && (
+            <Link href="/admin" style={linkStyle}>
+              ADMIN
+            </Link>
+          )}
         </nav>
 
-        <form action="/api/logout" method="POST" style={{ position: "absolute", left: 28, right: 28, bottom: 32 }}>
-          <button type="submit" style={{ width: "100%", border: "none", borderRadius: 16, backgroundColor: "#EC5353", color: "black", padding: "18px 16px", fontSize: 24, fontWeight: 900, cursor: "pointer", boxShadow: "0 4px 12px rgba(0,0,0,0.12)" }}>
+        <form
+          action="/api/logout"
+          method="POST"
+          style={{
+            position: "absolute",
+            left: 28,
+            right: 28,
+            bottom: 32,
+          }}
+        >
+          <button
+            type="submit"
+            style={{
+              width: "100%",
+              border: "none",
+              borderRadius: 16,
+              backgroundColor: "#EC5353",
+              color: "black",
+              padding: "18px 16px",
+              fontSize: 24,
+              fontWeight: 900,
+              cursor: "pointer",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.12)",
+            }}
+          >
             Afmelden
           </button>
         </form>
