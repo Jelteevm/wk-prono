@@ -1,5 +1,13 @@
 import { createClient } from "@supabase/supabase-js";
 
+type Prediction = {
+  user_id: string;
+  match_id: number;
+  result_pick: string | null;
+  home_score: number | null;
+  away_score: number | null;
+};
+
 export async function POST(request: Request) {
   const formData = await request.formData();
 
@@ -20,6 +28,29 @@ export async function POST(request: Request) {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
+
+  async function fetchAllPredictions() {
+    let all: Prediction[] = [];
+    let from = 0;
+    const size = 1000;
+
+    while (true) {
+      const { data, error } = await supabase
+        .from("predictions")
+        .select("user_id, match_id, result_pick, home_score, away_score")
+        .range(from, from + size - 1);
+
+      if (error) throw error;
+      if (!data || data.length === 0) break;
+
+      all = all.concat(data as Prediction[]);
+
+      if (data.length < size) break;
+      from += size;
+    }
+
+    return all;
+  }
 
   const { data: adminProfile } = await supabase
     .from("profiles")
@@ -83,9 +114,7 @@ export async function POST(request: Request) {
     .from("profiles")
     .select("id, world_cup_winner, top_scorer");
 
-  const { data: predictions } = await supabase
-    .from("predictions")
-    .select("user_id, match_id, result_pick, home_score, away_score");
+  const predictions = await fetchAllPredictions();
 
   const { data: results } = await supabase
     .from("match_results")
@@ -94,9 +123,9 @@ export async function POST(request: Request) {
   for (const profile of profiles || []) {
     let points = 0;
 
-    const userPredictions =
-      predictions?.filter((prediction) => prediction.user_id === profile.id) ||
-      [];
+    const userPredictions = predictions.filter(
+      (prediction) => prediction.user_id === profile.id
+    );
 
     for (const prediction of userPredictions) {
       const result = results?.find(
@@ -117,21 +146,21 @@ export async function POST(request: Request) {
         points += 2;
       }
 
-      if (prediction.result_pick === actualPick) {
+      if (String(prediction.result_pick || "").trim() === actualPick) {
         points += 1;
       }
     }
 
     if (
       actualWorldCupWinner &&
-      profile.world_cup_winner === actualWorldCupWinner
+      String(profile.world_cup_winner || "").trim() === actualWorldCupWinner
     ) {
       points += 6;
     }
 
     if (
       actualTopScorer &&
-      profile.top_scorer?.toLowerCase().trim() ===
+      String(profile.top_scorer || "").toLowerCase().trim() ===
         actualTopScorer.toLowerCase().trim()
     ) {
       points += 4;
