@@ -500,30 +500,55 @@ const { data: resultRows } = await supabase
 
                   <div className="p-6">
                     <div
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns: "1fr 80px 1fr",
-                        alignItems: "center",
-                        gap: 12,
-                        marginBottom: 12,
-                      }}
-                    >
-                      <div style={{ textAlign: "center" }}>
-                        {renderFlag(match.home_flag, match.home_team)}
-                        <div style={{ fontWeight: 900 }}>{match.home_team}</div>
-                      </div>
+  style={{
+    display: "grid",
+    gridTemplateColumns: "1fr 80px 1fr",
+    alignItems: "start",
+    gap: 12,
+    marginBottom: 12,
+  }}
+>
+  <div style={{ textAlign: "center", minWidth: 0 }}>
+    {renderFlag(match.home_flag, match.home_team)}
+    <div
+      style={{
+        fontWeight: 900,
+        lineHeight: 1.15,
+        wordBreak: "normal",
+      }}
+    >
+      {match.home_team}
+    </div>
+  </div>
 
-                      <div style={{ fontSize: 26, fontWeight: 900 }}>VS</div>
+  <div
+    style={{
+      fontSize: 26,
+      fontWeight: 900,
+      textAlign: "center",
+      paddingTop: 28,
+    }}
+  >
+    VS
+  </div>
 
-                      <div style={{ textAlign: "center" }}>
-                        {renderFlag(match.away_flag, match.away_team)}
-                        <div style={{ fontWeight: 900 }}>{match.away_team}</div>
-                      </div>
-                    </div>
+  <div style={{ textAlign: "center", minWidth: 0 }}>
+    {renderFlag(match.away_flag, match.away_team)}
+    <div
+      style={{
+        fontWeight: 900,
+        lineHeight: 1.15,
+        wordBreak: "normal",
+      }}
+    >
+      {match.away_team}
+    </div>
+  </div>
+</div>
 
                     {match.match_time && (
                       <p className="mb-5 text-center text-sm font-black text-gray-500">
-                        🕒 {match.match_time}
+                        🕒 {match.match_time?.slice(0, 5)}
                       </p>
                     )}
 

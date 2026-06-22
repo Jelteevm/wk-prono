@@ -380,7 +380,7 @@ const selectedDate =
       marginBottom: 6,
     }}
   >
-    {match.match_time || ""}
+    {match.match_time?.slice(0, 5) || ""}
   </div>
 )}
 
