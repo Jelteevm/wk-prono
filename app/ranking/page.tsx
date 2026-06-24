@@ -20,6 +20,28 @@ type Player = {
   name: string;
   photo: string | null;
 };
+async function fetchAllPredictions(supabase: any) {
+  let all: any[] = [];
+  let from = 0;
+  const size = 1000;
+
+  while (true) {
+    const { data, error } = await supabase
+      .from("predictions")
+      .select("user_id, home_score, away_score")
+      .range(from, from + size - 1);
+
+    if (error) throw error;
+    if (!data || data.length === 0) break;
+
+    all = all.concat(data);
+
+    if (data.length < size) break;
+    from += size;
+  }
+
+  return all;
+}
 
 export default async function RankingPage() {
   const cookieStore = await cookies();
@@ -58,6 +80,21 @@ export default async function RankingPage() {
     .from("players")
     .select("name, photo");
 
+    const predictionsData = await fetchAllPredictions(supabase);
+
+  const { data: resultsData } = await supabase
+  .from("match_results")
+  .select("home_score, away_score");
+
+const realGoals =
+  resultsData?.reduce(
+    (sum, match) =>
+      sum +
+      Number(match.home_score || 0) +
+      Number(match.away_score || 0),
+    0
+  ) || 0;
+
   const { data: speeldag1Deadline } = await supabase
     .from("speeldag_deadlines")
     .select("deadline")
@@ -68,9 +105,33 @@ export default async function RankingPage() {
     ? new Date() > new Date(speeldag1Deadline.deadline)
     : false;
 
-  const ranking: Profile[] = profiles || [];
   const teams: Team[] = teamsData || [];
-  const players: Player[] = playersData || [];
+const players: Player[] = playersData || [];
+const predictions = predictionsData || [];
+
+function getPredictedGoals(userId: string) {
+  return predictions
+    .filter((prediction) => prediction.user_id === userId)
+    .reduce(
+      (sum, prediction) =>
+        sum +
+        Number(prediction.home_score || 0) +
+        Number(prediction.away_score || 0),
+      0
+    );
+}
+
+function getGoalDifference(userId: string) {
+  return Math.abs(getPredictedGoals(userId) - realGoals);
+}
+
+const ranking: Profile[] = [...(profiles || [])].sort((a, b) => {
+  if ((b.points || 0) !== (a.points || 0)) {
+    return (b.points || 0) - (a.points || 0);
+  }
+
+  return getGoalDifference(a.id) - getGoalDifference(b.id);
+});
 
   function getTeamFlag(teamName: string | null) {
     if (!teamName) return null;
@@ -242,6 +303,7 @@ export default async function RankingPage() {
                           flexDirection: "column",
                           gap: 10,
                         }}
+                        
                       >
                         <div
                           style={{
@@ -295,55 +357,70 @@ export default async function RankingPage() {
                         </div>
 
                         <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 12,
-                            fontWeight: 900,
-                          }}
-                        >
-                          <div style={{ width: 28, textAlign: "center" }}>
-                            ⚽
-                          </div>
+  style={{
+    display: "flex",
+    alignItems: "center",
+    gap: 12,
+    fontWeight: 900,
+  }}
+>
+  <div style={{ width: 28, textAlign: "center" }}>⚽</div>
 
-                          <div
-                            style={{
-                              width: 38,
-                              height: 38,
-                              borderRadius: "50%",
-                              backgroundColor: "white",
-                              overflow: "hidden",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              flexShrink: 0,
-                            }}
-                          >
-                            {scorerPhoto ? (
-                              <img
-                                src={scorerPhoto}
-                                alt={player.top_scorer || "Topschutter"}
-                                style={{
-                                  width: "100%",
-                                  height: "100%",
-                                  objectFit: "cover",
-                                }}
-                              />
-                            ) : (
-                              "?"
-                            )}
-                          </div>
+  <div
+    style={{
+      width: 38,
+      height: 38,
+      borderRadius: "50%",
+      backgroundColor: "white",
+      overflow: "hidden",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      flexShrink: 0,
+    }}
+  >
+    {scorerPhoto ? (
+      <img
+        src={scorerPhoto}
+        alt={player.top_scorer || "Topschutter"}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+        }}
+      />
+    ) : (
+      "?"
+    )}
+  </div>
 
-                          <div
-                            style={{
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                            }}
-                          >
-                            {player.top_scorer || "Nog geen topschutter"}
-                          </div>
-                        </div>
+  <div
+    style={{
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      whiteSpace: "nowrap",
+    }}
+  >
+    {player.top_scorer || "Nog geen topschutter"}
+  </div>
+</div>
+
+<div
+  style={{
+    marginTop: 8,
+    padding: 12,
+    borderRadius: 14,
+    backgroundColor: "rgba(255,255,255,0.65)",
+    display: "flex",
+    flexDirection: "column",
+    gap: 6,
+    fontWeight: 900,
+  }}
+>
+  <div>Voorspelde goals: {getPredictedGoals(player.id)}</div>
+  <div>Aantal goals: {realGoals}</div>
+  <div>Verschil: {getGoalDifference(player.id)}</div>
+</div>
                       </div>
                     )}
                   </div>
