@@ -1,5 +1,20 @@
 import { createClient } from "@supabase/supabase-js";
 
+function isTriondaMatch(speeldag: string | null) {
+  if (!speeldag) return false;
+
+  const value = speeldag.toLowerCase();
+
+  return (
+    value.includes("16e finale") ||
+    value.includes("8e finale") ||
+    value.includes("kwartfinale") ||
+    value.includes("halve finale") ||
+    value.includes("verliezersfinale") ||
+    value.includes("finale")
+  );
+}
+
 export async function POST(request: Request) {
   const formData = await request.formData();
 
@@ -91,6 +106,43 @@ export async function POST(request: Request) {
         )}&error=${encodeURIComponent(error.message)}`,
       },
     });
+  }
+
+  const triondaPredictions = (matches || [])
+    .filter((match) => isTriondaMatch(match.speeldag))
+    .map((match) => ({
+      user_id: userId,
+      match_id: match.id,
+      first_scorer: String(
+        formData.get(`trionda_first_scorer_${match.id}`) || ""
+      ).trim(),
+      yellow_card_player: String(
+        formData.get(`trionda_yellow_card_${match.id}`) || ""
+      ).trim(),
+      updated_at: new Date().toISOString(),
+    }))
+    .filter(
+      (prediction) =>
+        prediction.first_scorer || prediction.yellow_card_player
+    );
+
+  if (triondaPredictions.length > 0) {
+    const { error: triondaError } = await supabase
+      .from("trionda_predictions")
+      .upsert(triondaPredictions, {
+        onConflict: "user_id,match_id",
+      });
+
+    if (triondaError) {
+      return new Response(null, {
+        status: 303,
+        headers: {
+          Location: `/voorspellingen?speeldag=${encodeURIComponent(
+            selectedSpeeldag
+          )}&error=${encodeURIComponent(triondaError.message)}`,
+        },
+      });
+    }
   }
 
   return new Response(null, {

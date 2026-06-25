@@ -8,6 +8,7 @@ type Prediction = {
   away_score: number | null;
 };
 
+
 export async function POST(request: Request) {
   const formData = await request.formData();
 
@@ -106,6 +107,33 @@ export async function POST(request: Request) {
 
   if (filledResults.length > 0) {
     await supabase.from("match_results").upsert(filledResults, {
+      onConflict: "match_id",
+    });
+  }
+
+  const filledTriondaResults =
+    matches?.flatMap((match) => {
+      const firstScorer = String(
+        formData.get(`trionda_first_scorer_${match.id}`) || ""
+      ).trim();
+
+      const yellowCards = formData
+  .getAll(`trionda_yellow_cards_${match.id}`)
+  .map((value) => String(value).trim())
+  .filter(Boolean);
+
+
+      return [
+        {
+          match_id: match.id,
+          first_scorer: firstScorer || null,
+          yellow_card_players: yellowCards,
+        },
+      ];
+    }) || [];
+
+  if (filledTriondaResults.length > 0) {
+    await supabase.from("trionda_results").upsert(filledTriondaResults, {
       onConflict: "match_id",
     });
   }

@@ -128,6 +128,10 @@ export default function Menu({
             RANKING
           </Link>
 
+          <Link href="/trionda" style={linkStyle}>
+            TRIONDA
+          </Link>
+
           <Link href="/reglement" style={linkStyle}>
             REGLEMENT
           </Link>

@@ -10,11 +10,25 @@ type Prediction = {
 };
 
 type PublicPrediction = {
+  user_id: string;
   match_id: number;
   home_score: number;
   away_score: number;
   result_pick: string | null;
   username: string;
+};
+
+type PublicTriondaPrediction = {
+  user_id: string;
+  match_id: number;
+  first_scorer: string | null;
+  yellow_card_player: string | null;
+};
+
+type TriondaResult = {
+  match_id: number;
+  first_scorer: string | null;
+  yellow_card_players: string[] | null;
 };
 
 type Match = {
@@ -120,6 +134,27 @@ const selectedDate =
           .in("match_id", matchIds)
       : { data: [] };
 
+      const { data: triondaPredictionRows } =
+  matchIds.length > 0
+    ? await supabase
+        .from("trionda_predictions")
+        .select("user_id, match_id, first_scorer, yellow_card_player")
+        .in("match_id", matchIds)
+    : { data: [] };
+
+    const { data: triondaResultRows } =
+  matchIds.length > 0
+    ? await supabase
+        .from("trionda_results")
+        .select("match_id, first_scorer, yellow_card_players")
+        .in("match_id", matchIds)
+    : { data: [] };
+
+const allTriondaResults: TriondaResult[] = triondaResultRows || [];
+
+const allTriondaPredictions: PublicTriondaPrediction[] =
+  triondaPredictionRows || [];
+
   const { data: profileRows } = await supabase
     .from("profiles")
     .select("id, username");
@@ -130,6 +165,7 @@ const selectedDate =
 
   const allPredictions: PublicPrediction[] =
     allPredictionRows?.map((prediction) => ({
+      user_id: prediction.user_id,
       match_id: prediction.match_id,
       home_score: prediction.home_score,
       away_score: prediction.away_score,
@@ -146,6 +182,37 @@ const selectedDate =
       (prediction) => prediction.match_id === matchId
     );
   }
+
+  function getTriondaPrediction(userId: string, matchId: number) {
+  return allTriondaPredictions.find(
+    (prediction) =>
+      prediction.user_id === userId && prediction.match_id === matchId
+  );
+}
+
+function cleanName(value: string | null | undefined) {
+  return String(value || "").toLowerCase().trim();
+}
+
+function getTriondaResult(matchId: number) {
+  return allTriondaResults.find((result) => result.match_id === matchId);
+}
+
+function isTriondaMatch(speeldag: string | null) {
+  if (!speeldag) return false;
+
+  const value = speeldag.toLowerCase();
+
+  return (
+    value.includes("16e finale") ||
+    value.includes("8e finale") ||
+    value.includes("kwartfinale") ||
+    value.includes("halve finale") ||
+    value.includes("verliezersfinale") ||
+    value.includes("finale")
+  );
+}
+
   function getResult(matchId: number) {
   return resultRows?.find(
     (result) => result.match_id === matchId
@@ -300,6 +367,7 @@ const selectedDate =
           {matches.map((match) => {
             const prediction = getPrediction(match.id);
             const publicPredictions = getPublicPredictions(match.id);
+            const isKoMatch = isTriondaMatch(match.speeldag);
             const canViewPredictions = isDeadlinePassed(match.speeldag);
             const result = getResult(match.id);
 
@@ -456,71 +524,125 @@ const selectedDate =
                     )}
 
                     {canViewPredictions &&
-                      publicPredictions.map((item, index) => (
-                        <div
-                          key={`${item.match_id}-${index}`}
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            gap: 10,
-                            padding: "10px 0",
-                            borderBottom:
-                              index === publicPredictions.length - 1
-                                ? "none"
-                                : "1px solid rgba(0,0,0,0.15)",
-                          }}
-                        >
-                          <div
-                            style={{
-                              fontWeight: 900,
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                            }}
-                          >
-                            {item.username}
-                          </div>
+  publicPredictions.map((item, index) => {
+    const trionda = getTriondaPrediction(item.user_id, item.match_id);
 
-                          <div
-                            style={{
-                              fontWeight: 900,
-                              whiteSpace: "nowrap",
-                            }}
-                          >
-                           <span
-                            style={{
-                             color:
-                              result &&
-                              item.home_score === result.home_score &&
-                              item.away_score === result.away_score
-                                ? "#16a34a"
-                                : "black",
-                          }}
->
-  {item.home_score} - {item.away_score}
-</span>
-{"  "}
-<span
-                             style={{
-                              color:
-                                result &&
-                               item.result_pick ===
-                                 (result.home_score > result.away_score
-                                  ? "1"
-                                  : result.home_score < result.away_score
-                                  ? "2"
-                                  : "X")
-                                  ? "#16a34a"
-                                  : "#777",
-  }}
->
-  ({item.result_pick || "?"})
-</span>
+    return (
+      <div
+        key={`${item.match_id}-${index}`}
+        style={{
+          padding: "10px 0",
+          borderBottom:
+            index === publicPredictions.length - 1
+              ? "none"
+              : "1px solid rgba(0,0,0,0.15)",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: 10,
+          }}
+        >
+          <div
+            style={{
+              fontWeight: 900,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {item.username}
+          </div>
 
-                          </div>
-                        </div>
-                      ))}
+          <div
+            style={{
+              fontWeight: 900,
+              whiteSpace: "nowrap",
+            }}
+          >
+            <span
+              style={{
+                color:
+                  result &&
+                  item.home_score === result.home_score &&
+                  item.away_score === result.away_score
+                    ? "#16a34a"
+                    : "black",
+              }}
+            >
+              {item.home_score} - {item.away_score}
+            </span>{" "}
+            <span
+              style={{
+                color:
+                  result &&
+                  item.result_pick ===
+                    (result.home_score > result.away_score
+                      ? "1"
+                      : result.home_score < result.away_score
+                      ? "2"
+                      : "X")
+                    ? "#16a34a"
+                    : "#777",
+              }}
+            >
+              ({item.result_pick || "?"})
+            </span>
+          </div>
+        </div>
+
+        {isKoMatch && (
+          <div
+            style={{
+              marginTop: 4,
+              fontSize: 13,
+              fontWeight: 900,
+              color: "#555",
+            }}
+          >
+            {(() => {
+  const triondaResult = getTriondaResult(item.match_id);
+
+  const firstScorerCorrect =
+    cleanName(trionda?.first_scorer) &&
+    cleanName(trionda?.first_scorer) ===
+      cleanName(triondaResult?.first_scorer);
+
+  const yellowCardCorrect =
+    cleanName(trionda?.yellow_card_player) &&
+    (triondaResult?.yellow_card_players || []).some(
+      (player) => cleanName(player) === cleanName(trionda?.yellow_card_player)
+    );
+
+  return (
+    <>
+      ⚽{" "}
+      <span style={{ color: firstScorerCorrect ? "#16a34a" : "#555" }}>
+        {trionda?.first_scorer || "—"}
+      </span>{" "}
+      &nbsp;&nbsp; 🟨{" "}
+      <span style={{ color: yellowCardCorrect ? "#16a34a" : "#555" }}>
+        {trionda?.yellow_card_player || "—"}
+      </span>
+
+      {firstScorerCorrect && yellowCardCorrect && (
+        <span style={{ color: "#16a34a" }}>
+          {" "}
+          ⭐ Bonuspunt
+        </span>
+      )}
+    </>
+  );
+})()}
+          </div>
+        )}
+      </div>
+    );
+  })}
+                      
                   </div>
                 </details>
               </div>

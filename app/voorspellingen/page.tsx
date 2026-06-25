@@ -20,6 +20,7 @@ type Match = {
 type Team = {
   id: number;
   name: string;
+  api_name: string | null;
   flag: string | null;
 };
 
@@ -27,6 +28,41 @@ type Deadline = {
   speeldag: string;
   deadline: string;
 };
+
+type TriondaPrediction = {
+  match_id: number;
+  first_scorer: string | null;
+  yellow_card_player: string | null;
+};
+
+type Player = {
+  name: string;
+  team_name: string | null;
+};
+
+async function fetchAllPlayers(supabase: any) {
+  let all: Player[] = [];
+  let from = 0;
+  const size = 1000;
+
+  while (true) {
+    const { data, error } = await supabase
+      .from("players")
+      .select("name, team_name")
+      .order("name", { ascending: true })
+      .range(from, from + size - 1);
+
+    if (error) throw error;
+    if (!data || data.length === 0) break;
+
+    all = all.concat(data as Player[]);
+
+    if (data.length < size) break;
+    from += size;
+  }
+
+  return all;
+}
 
 export default async function VoorspellingenPage({
   searchParams,
@@ -54,14 +90,12 @@ export default async function VoorspellingenPage({
     .order("id", { ascending: true });
 
   const { data: teamsData } = await supabase
-    .from("teams")
-    .select("id, name, flag")
-    .order("name", { ascending: true });
+  .from("teams")
+  .select("id, name, api_name, flag")
+  .order("name", { ascending: true });
 
-  const { data: playersData } = await supabase
-    .from("players")
-    .select("name")
-    .order("name", { ascending: true });
+
+  const playersData = await fetchAllPlayers(supabase);
 
   const { data: deadlineRows } = await supabase
     .from("speeldag_deadlines")
@@ -114,6 +148,7 @@ const { data: resultRows } = await supabase
   let isAdmin = false;
   let avatarUrl = "";
   let existingPredictions: any[] = [];
+  let existingTriondaPredictions: TriondaPrediction[] = [];
   let worldCupWinner = "";
   let topScorer = "";
 
@@ -138,11 +173,57 @@ const { data: resultRows } = await supabase
     existingPredictions = data || [];
   }
 
+  const { data: triondaData } = await supabase
+  .from("trionda_predictions")
+  .select("match_id, first_scorer, yellow_card_player")
+  .eq("user_id", userId);
+
+existingTriondaPredictions = triondaData || [];
+
   function getPrediction(matchId: number) {
     return existingPredictions.find(
       (prediction) => prediction.match_id === matchId
     );
   }
+
+  function getApiTeamName(teamName: string) {
+  const team = teams.find(
+    (team) => team.name.toLowerCase().trim() === teamName.toLowerCase().trim()
+  );
+
+  return team?.api_name || teamName;
+}
+
+function getPlayersForTeam(teamName: string) {
+  const apiName = getApiTeamName(teamName).toLowerCase().trim();
+
+  return players.filter(
+    (player) =>
+      player.team_name &&
+      player.team_name.toLowerCase().trim() === apiName
+  );
+}
+
+  function getTriondaPrediction(matchId: number) {
+  return existingTriondaPredictions.find(
+    (prediction) => prediction.match_id === matchId
+  );
+}
+
+function isTriondaMatch(speeldag: string | null) {
+  if (!speeldag) return false;
+
+  const value = speeldag.toLowerCase();
+
+  return (
+    value.includes("16e finale") ||
+    value.includes("8e finale") ||
+    value.includes("kwartfinale") ||
+    value.includes("halve finale") ||
+    value.includes("verliezersfinale") ||
+    value.includes("finale")
+  );
+}
 
   function renderFlag(flag: string | null, alt: string) {
     if (!flag) {
@@ -597,6 +678,110 @@ const { data: resultRows } = await supabase
                         className="w-20 rounded-xl border p-3 text-center text-xl"
                       />
                     </div>
+                    {isTriondaMatch(match.speeldag) && (
+  <div
+    style={{
+      marginTop: 24,
+      borderTop: "1px solid rgba(0,0,0,0.12)",
+      paddingTop: 20,
+    }}
+  >
+    
+<div
+  style={{
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 10,
+    marginBottom: 16,
+  }}
+>
+  <img
+    src="/trionda.svg"
+    alt="Trionda"
+    style={{
+      width: 32,
+      height: 32,
+    }}
+  />
+
+  <h3
+    style={{
+      fontSize: 22,
+      fontWeight: 900,
+      margin: 0,
+    }}
+  >
+    Trionda Challenge
+  </h3>
+</div>
+    <label className="mb-2 block text-sm font-black text-gray-500">
+      {"\u26BD\uFE0E"} Eerste doelpuntenmaker — 2 punten
+    </label>
+
+    <select
+      name={`trionda_first_scorer_${match.id}`}
+      defaultValue={getTriondaPrediction(match.id)?.first_scorer || ""}
+      className="mb-5 w-full rounded-xl border p-3 text-center text-lg font-bold"
+    >
+      <option value="">Kies speler</option>
+      <optgroup label={match.home_team}>
+  {getPlayersForTeam(match.home_team).map((player) => (
+    <option key={`scorer-home-${match.id}-${player.name}`} value={player.name}>
+      {player.name}
+    </option>
+  ))}
+</optgroup>
+
+<optgroup label={match.away_team}>
+  {getPlayersForTeam(match.away_team).map((player) => (
+    <option key={`scorer-away-${match.id}-${player.name}`} value={player.name}>
+      {player.name}
+    </option>
+  ))}
+</optgroup>
+    </select>
+
+    <label className="mb-2 block text-sm font-black text-gray-500">
+      🟨 Speler met gele kaart — 2 punten
+    </label>
+
+    <select
+      name={`trionda_yellow_card_${match.id}`}
+      defaultValue={getTriondaPrediction(match.id)?.yellow_card_player || ""}
+      className="w-full rounded-xl border p-3 text-center text-lg font-bold"
+    >
+      <option value="">Kies speler</option>
+      <optgroup label={match.home_team}>
+  {getPlayersForTeam(match.home_team).map((player) => (
+    <option key={`yellow-home-${match.id}-${player.name}`} value={player.name}>
+      {player.name}
+    </option>
+  ))}
+</optgroup>
+
+<optgroup label={match.away_team}>
+  {getPlayersForTeam(match.away_team).map((player) => (
+    <option key={`yellow-away-${match.id}-${player.name}`} value={player.name}>
+      {player.name}
+    </option>
+  ))}
+</optgroup>
+    </select>
+
+    <p
+      style={{
+        marginTop: 12,
+        textAlign: "center",
+        fontSize: 13,
+        fontWeight: 900,
+        color: "#666",
+      }}
+    >
+      🎯 Beide juist in dezelfde match = +1 bonuspunt
+    </p>
+  </div>
+)}
                   </div>
                 </div>
               );

@@ -18,10 +18,46 @@ type Result = {
   away_score: number | null;
 };
 
+type TriondaResult = {
+  match_id: number;
+  first_scorer: string | null;
+  yellow_card_players: string[] | null;
+};
+
 type Team = {
   id: number;
   name: string;
+  api_name: string | null;
 };
+
+type Player = {
+  name: string;
+  team_name: string | null;
+};
+
+async function fetchAllPlayers(supabase: any) {
+  let all: Player[] = [];
+  let from = 0;
+  const size = 1000;
+
+  while (true) {
+    const { data, error } = await supabase
+      .from("players")
+      .select("name, team_name")
+      .order("name", { ascending: true })
+      .range(from, from + size - 1);
+
+    if (error) throw error;
+    if (!data || data.length === 0) break;
+
+    all = all.concat(data as Player[]);
+
+    if (data.length < size) break;
+    from += size;
+  }
+
+  return all;
+}
 
 export default async function AdminPage({
   searchParams,
@@ -94,16 +130,24 @@ export default async function AdminPage({
     .from("match_results")
     .select("*");
 
+    const { data: triondaResultsData } = await supabase
+  .from("trionda_results")
+  .select("match_id, first_scorer, yellow_card_players");
+
   const { data: teamsData } = await supabase
     .from("teams")
-    .select("id, name")
+    .select("id, name, api_name")
     .order("name", { ascending: true });
+
+    const playersData = await fetchAllPlayers(supabase);
 
   const { data: settingsData } = await supabase.from("app_settings").select("*");
 
   const matches: Match[] = matchesData || [];
   const results: Result[] = resultsData || [];
+  const triondaResults: TriondaResult[] = triondaResultsData || [];
   const teams: Team[] = teamsData || [];
+  const players: Player[] = playersData || [];
 
   const syncedCount = matches.filter((match) => match.fixture_id).length;
 
@@ -118,6 +162,43 @@ export default async function AdminPage({
   function getResult(matchId: number) {
     return results.find((result) => result.match_id === matchId);
   }
+
+  function getTriondaResult(matchId: number) {
+  return triondaResults.find((result) => result.match_id === matchId);
+}
+
+function getApiTeamName(teamName: string) {
+  const team = teams.find(
+    (team) => team.name.toLowerCase().trim() === teamName.toLowerCase().trim()
+  );
+
+  return team?.api_name || teamName;
+}
+
+function getPlayersForTeam(teamName: string) {
+  const apiName = getApiTeamName(teamName).toLowerCase().trim();
+
+  return players.filter(
+    (player: Player) =>
+      player.team_name &&
+      player.team_name.toLowerCase().trim() === apiName
+  );
+}
+
+function isTriondaMatch(speeldag: string | null) {
+  if (!speeldag) return false;
+
+  const value = speeldag.toLowerCase();
+
+  return (
+    value.includes("16e finale") ||
+    value.includes("8e finale") ||
+    value.includes("kwartfinale") ||
+    value.includes("halve finale") ||
+    value.includes("verliezersfinale") ||
+    value.includes("finale")
+  );
+}
 
   return (
     <main
@@ -267,6 +348,114 @@ export default async function AdminPage({
                       className="w-20 rounded-xl border p-3 text-center text-xl"
                     />
                   </div>
+                  {isTriondaMatch(match.speeldag) && (
+  <div
+    style={{
+      marginTop: 22,
+      paddingTop: 18,
+      borderTop: "1px solid rgba(0,0,0,0.15)",
+    }}
+  >
+    <h3 className="mb-4 text-center text-xl font-black">
+      🎁 Trionda resultaat
+    </h3>
+
+    <label className="mb-2 block text-sm font-black text-gray-500">
+      ⚽ Eerste doelpuntenmaker
+    </label>
+
+    <select
+  name={`trionda_first_scorer_${match.id}`}
+  defaultValue={getTriondaResult(match.id)?.first_scorer || ""}
+  className="mb-5 w-full rounded-xl border p-3 text-center text-lg font-bold"
+>
+  <option value="">Nog niet ingevuld</option>
+
+  <optgroup label={match.home_team}>
+    {getPlayersForTeam(match.home_team).map((player) => (
+      <option key={`admin-scorer-home-${match.id}-${player.name}`} value={player.name}>
+        {player.name}
+      </option>
+    ))}
+  </optgroup>
+
+  <optgroup label={match.away_team}>
+    {getPlayersForTeam(match.away_team).map((player) => (
+      <option key={`admin-scorer-away-${match.id}-${player.name}`} value={player.name}>
+        {player.name}
+      </option>
+    ))}
+  </optgroup>
+</select>
+
+    <label className="mb-2 block text-sm font-black text-gray-500">
+  🟨 Spelers met gele kaart
+</label>
+
+<div
+  className="rounded-xl border p-4"
+  style={{
+    maxHeight: 260,
+    overflowY: "auto",
+    backgroundColor: "#fffdf0",
+  }}
+>
+  <div className="mb-3 font-black">{match.home_team}</div>
+
+  {getPlayersForTeam(match.home_team).map((player) => (
+    <label
+      key={`yellow-home-${match.id}-${player.name}`}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 10,
+        marginBottom: 8,
+        fontWeight: 800,
+      }}
+    >
+      <input
+        type="checkbox"
+        name={`trionda_yellow_cards_${match.id}`}
+        value={player.name}
+        defaultChecked={
+          getTriondaResult(match.id)?.yellow_card_players?.includes(
+            player.name
+          ) || false
+        }
+      />
+      {player.name}
+    </label>
+  ))}
+
+  <div className="mb-3 mt-5 font-black">{match.away_team}</div>
+
+  {getPlayersForTeam(match.away_team).map((player) => (
+    <label
+      key={`yellow-away-${match.id}-${player.name}`}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 10,
+        marginBottom: 8,
+        fontWeight: 800,
+      }}
+    >
+      <input
+        type="checkbox"
+        name={`trionda_yellow_cards_${match.id}`}
+        value={player.name}
+        defaultChecked={
+          getTriondaResult(match.id)?.yellow_card_players?.includes(
+            player.name
+          ) || false
+        }
+      />
+      {player.name}
+    </label>
+  ))}
+</div>
+  </div>
+)}
                 </div>
               );
             })}
