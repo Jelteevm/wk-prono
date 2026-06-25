@@ -8,6 +8,7 @@ type Match = {
   id: number;
   speeldag: string | null;
   match_time: string | null;
+  prediction_deadline: string | null;
   group_name: string | null;
   stadium: string | null;
   city: string | null;
@@ -85,7 +86,7 @@ export default async function VoorspellingenPage({
   const { data: allMatchesData } = await supabase
     .from("matches")
     .select(
-      "id, speeldag, match_time, group_name, stadium, city, home_team, away_team, home_flag, away_flag"
+      "id, speeldag, match_time, prediction_deadline, group_name, stadium, city, home_team, away_team, home_flag, away_flag"
     )
     .order("id", { ascending: true });
 
@@ -114,19 +115,19 @@ const { data: resultRows } = await supabase
     new Set(allMatches.map((match) => match.speeldag || "Zonder speeldag"))
   );
 
-  function getDeadlineForSpeeldag(speeldag: string) {
-    return deadlines.find((deadline) => deadline.speeldag === speeldag);
-  }
+  function isMatchLocked(match: Match) {
+  if (!match.prediction_deadline) return true;
 
-  function isSpeeldagLocked(speeldag: string) {
-    const deadline = getDeadlineForSpeeldag(speeldag);
+  return now > new Date(match.prediction_deadline);
+}
 
-    if (!deadline?.deadline) {
-      return false;
-    }
+function isSpeeldagLocked(speeldag: string) {
+  const matchesForSpeeldag = allMatches.filter(
+    (match) => (match.speeldag || "Zonder speeldag") === speeldag
+  );
 
-    return now > new Date(deadline.deadline);
-  }
+  return matchesForSpeeldag.every((match) => isMatchLocked(match));
+}
 
   const openSpeeldagen = allSpeeldagen.filter(
     (speeldag) => !isSpeeldagLocked(speeldag)
@@ -138,11 +139,13 @@ const { data: resultRows } = await supabase
       : openSpeeldagen[0] || "";
 
   const matches = allMatches.filter(
-    (match) => (match.speeldag || "Zonder speeldag") === selectedSpeeldag
-  );
+  (match) =>
+    (match.speeldag || "Zonder speeldag") === selectedSpeeldag &&
+    !isMatchLocked(match)
+);
 
-  const selectedDeadlineRow = getDeadlineForSpeeldag(selectedSpeeldag);
-  const deadline = selectedDeadlineRow?.deadline || "";
+  const selectedOpenMatch = matches.find((match) => !isMatchLocked(match));
+const deadline = selectedOpenMatch?.prediction_deadline || "";
 
   let username = "Speler";
   let isAdmin = false;
@@ -472,6 +475,7 @@ function isTriondaMatch(speeldag: string | null) {
             {matches.map((match) => {
               const prediction = getPrediction(match.id);
               const selectedPick = prediction?.result_pick || "X";
+              const matchLocked = isMatchLocked(match);
 
               return (
                 <div
@@ -642,6 +646,7 @@ function isTriondaMatch(speeldag: string | null) {
                         <label key={value} className="cursor-pointer">
                           <input
                             type="radio"
+                            disabled={matchLocked}
                             name={`result_${match.id}`}
                             value={value}
                             defaultChecked={selectedPick === value}
@@ -662,6 +667,7 @@ function isTriondaMatch(speeldag: string | null) {
                     <div className="flex items-center justify-center gap-4">
                       <input
                         name={`home_${match.id}`}
+                        disabled={matchLocked}
                         type="number"
                         min="0"
                         defaultValue={prediction?.home_score ?? ""}
@@ -672,6 +678,7 @@ function isTriondaMatch(speeldag: string | null) {
 
                       <input
                         name={`away_${match.id}`}
+                        disabled={matchLocked}
                         type="number"
                         min="0"
                         defaultValue={prediction?.away_score ?? ""}
@@ -721,6 +728,7 @@ function isTriondaMatch(speeldag: string | null) {
 
     <select
       name={`trionda_first_scorer_${match.id}`}
+      disabled={matchLocked}
       defaultValue={getTriondaPrediction(match.id)?.first_scorer || ""}
       className="mb-5 w-full rounded-xl border p-3 text-center text-lg font-bold"
     >
@@ -748,6 +756,7 @@ function isTriondaMatch(speeldag: string | null) {
 
     <select
       name={`trionda_yellow_card_${match.id}`}
+      disabled={matchLocked}
       defaultValue={getTriondaPrediction(match.id)?.yellow_card_player || ""}
       className="w-full rounded-xl border p-3 text-center text-lg font-bold"
     >
