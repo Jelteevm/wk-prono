@@ -424,7 +424,7 @@ function isTriondaMatch(speeldag: string | null) {
                 whiteSpace: "nowrap",
               }}
             >
-              ⏳ Deadline: {formatDeadline(deadline)}
+              ⏳ Deadline: 30 minuten voor elke aftrap
             </div>
           )}
 
