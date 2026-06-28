@@ -15,6 +15,20 @@ function isTriondaMatch(speeldag: string | null) {
   );
 }
 
+function isMatchOpen(match: { prediction_deadline: string | null }) {
+  if (!match.prediction_deadline) return false;
+
+  return new Date() <= new Date(match.prediction_deadline);
+}
+
+function isValidScore(value: FormDataEntryValue | null) {
+  if (value === null) return false;
+
+  const numberValue = Number(value);
+
+  return Number.isInteger(numberValue) && numberValue >= 0 && numberValue <= 30;
+}
+
 export async function POST(request: Request) {
   const formData = await request.formData();
 
@@ -38,28 +52,6 @@ export async function POST(request: Request) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
-  const { data: deadlineData } = await supabase
-    .from("speeldag_deadlines")
-    .select("deadline")
-    .eq("speeldag", selectedSpeeldag)
-    .single();
-
-  if (deadlineData?.deadline) {
-    const deadline = new Date(deadlineData.deadline);
-    const now = new Date();
-
-    if (now > deadline) {
-      return new Response(null, {
-        status: 303,
-        headers: {
-          Location: `/voorspellingen?error=${encodeURIComponent(
-            "Deadline verstreken. Wijzigen is niet meer mogelijk."
-          )}`,
-        },
-      });
-    }
-  }
-
   if (formData.has("world_cup_winner") || formData.has("top_scorer")) {
     const worldCupWinner = String(
       formData.get("world_cup_winner") || ""
@@ -82,49 +74,77 @@ export async function POST(request: Request) {
     .eq("speeldag", selectedSpeeldag)
     .order("id", { ascending: true });
 
-  const predictions = (matches || []).map((match) => ({
-    user_id: userId,
-    match_id: match.id,
-    match_name: `${match.home_team} - ${match.away_team}`,
-    home_team: match.home_team,
-    away_team: match.away_team,
-    result_pick: String(formData.get(`result_${match.id}`) || "X"),
-    home_score: Number(formData.get(`home_${match.id}`) || 0),
-    away_score: Number(formData.get(`away_${match.id}`) || 0),
-  }));
+  const openMatches = (matches || []).filter((match) => isMatchOpen(match));
 
-  const { error } = await supabase.from("predictions").upsert(predictions, {
-    onConflict: "user_id,match_id",
+  const predictions = openMatches.flatMap((match) => {
+    const homeValue = formData.get(`home_${match.id}`);
+    const awayValue = formData.get(`away_${match.id}`);
+    const resultPick = String(formData.get(`result_${match.id}`) || "");
+
+    if (!isValidScore(homeValue) || !isValidScore(awayValue)) {
+      return [];
+    }
+
+    if (!["1", "X", "2"].includes(resultPick)) {
+      return [];
+    }
+
+    return [
+      {
+        user_id: userId,
+        match_id: match.id,
+        match_name: `${match.home_team} - ${match.away_team}`,
+        home_team: match.home_team,
+        away_team: match.away_team,
+        result_pick: resultPick,
+        home_score: Number(homeValue),
+        away_score: Number(awayValue),
+      },
+    ];
   });
 
-  if (error) {
-    return new Response(null, {
-      status: 303,
-      headers: {
-        Location: `/voorspellingen?speeldag=${encodeURIComponent(
-          selectedSpeeldag
-        )}&error=${encodeURIComponent(error.message)}`,
-      },
+  if (predictions.length > 0) {
+    const { error } = await supabase.from("predictions").upsert(predictions, {
+      onConflict: "user_id,match_id",
     });
+
+    if (error) {
+      return new Response(null, {
+        status: 303,
+        headers: {
+          Location: `/voorspellingen?speeldag=${encodeURIComponent(
+            selectedSpeeldag
+          )}&error=${encodeURIComponent(error.message)}`,
+        },
+      });
+    }
   }
 
-  const triondaPredictions = (matches || [])
+  const triondaPredictions = openMatches
     .filter((match) => isTriondaMatch(match.speeldag))
-    .map((match) => ({
-      user_id: userId,
-      match_id: match.id,
-      first_scorer: String(
+    .flatMap((match) => {
+      const firstScorer = String(
         formData.get(`trionda_first_scorer_${match.id}`) || ""
-      ).trim(),
-      yellow_card_player: String(
+      ).trim();
+
+      const yellowCardPlayer = String(
         formData.get(`trionda_yellow_card_${match.id}`) || ""
-      ).trim(),
-      updated_at: new Date().toISOString(),
-    }))
-    .filter(
-      (prediction) =>
-        prediction.first_scorer || prediction.yellow_card_player
-    );
+      ).trim();
+
+      if (!firstScorer && !yellowCardPlayer) {
+        return [];
+      }
+
+      return [
+        {
+          user_id: userId,
+          match_id: match.id,
+          first_scorer: firstScorer,
+          yellow_card_player: yellowCardPlayer,
+          updated_at: new Date().toISOString(),
+        },
+      ];
+    });
 
   if (triondaPredictions.length > 0) {
     const { error: triondaError } = await supabase
