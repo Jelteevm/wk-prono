@@ -36,6 +36,7 @@ type Match = {
   speeldag: string | null;
   match_date: string;
   match_time: string | null;
+  prediction_deadline: string | null;
   home_team: string;
   away_team: string;
   group_name: string | null;
@@ -219,15 +220,14 @@ function isTriondaMatch(speeldag: string | null) {
   );
 }
 
-  function isDeadlinePassed(speeldag: string | null) {
-    if (!speeldag) return false;
+function isMatchLocked(match: Match) {
+  if (!match.prediction_deadline) return true;
 
-    const deadline = deadlines.find((item) => item.speeldag === speeldag);
+  return new Date() > new Date(match.prediction_deadline);
+}
 
-    if (!deadline?.deadline) return false;
+ 
 
-    return new Date() > new Date(deadline.deadline);
-  }
 
   function formatDate(date: string) {
     return new Date(date).toLocaleDateString("nl-BE", {
@@ -368,7 +368,7 @@ function isTriondaMatch(speeldag: string | null) {
             const prediction = getPrediction(match.id);
             const publicPredictions = getPublicPredictions(match.id);
             const isKoMatch = isTriondaMatch(match.speeldag);
-            const canViewPredictions = isDeadlinePassed(match.speeldag);
+            const canViewPredictions = isMatchLocked(match);
             const result = getResult(match.id);
 
             return (
