@@ -155,6 +155,9 @@ const ranking: Profile[] = [...(profiles || [])].sort((a, b) => {
     return player?.photo || null;
   }
 
+
+  const prizeMoney = ["250", "180", "130", "90", "70"];
+
   return (
     <main
       className="min-h-screen px-6 py-8 text-white"
@@ -182,27 +185,34 @@ const ranking: Profile[] = [...(profiles || [])].sort((a, b) => {
                 }}
               >
                 <div
-                  style={{
-                    position: "absolute",
-                    top: 14,
-                    left: 14,
-                    minWidth: 38,
-                    height: 38,
-                    borderRadius: "50%",
-                    backgroundColor: "#FCEA10",
-                    color: "black",
-                    fontSize: 16,
-                    fontWeight: 900,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    zIndex: 5,
-                    border: "2px solid white",
-                    boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-                  }}
-                >
-                  #{index + 1}
-                </div>
+  style={{
+    position: "absolute",
+    top: 12,
+    left: 12,
+    width: 46,
+    height: 46,
+    borderRadius: "50%",
+    backgroundColor: "#FCEA10",
+    color: "black",
+    fontWeight: 900,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 5,
+    border: "2px solid white",
+    boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+    lineHeight: 1,
+  }}
+>
+  <div style={{ fontSize: 16 }}>#{index + 1}</div>
+
+  {index < 5 && (
+    <div style={{ fontSize: 10, marginTop: 3 }}>
+      €{prizeMoney[index]}
+    </div>
+  )}
+</div>
 
                 <div
                   className="grid items-center p-5"
