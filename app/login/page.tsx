@@ -59,13 +59,20 @@ export default async function LoginPage({
         </button>
 
         <div className="mt-6 text-center">
-          <a
-            href="/register"
-            className="font-bold text-black underline"
-          >
-            Nog geen account? Registreer hier
-          </a>
-        </div>
+  <a
+    href="/forgot-password"
+    className="mb-3 block font-bold text-black underline"
+  >
+    Wachtwoord vergeten?
+  </a>
+
+  <a
+    href="/register"
+    className="font-bold text-black underline"
+  >
+    Nog geen account? Registreer hier
+  </a>
+</div>
       </form>
     </main>
   );
