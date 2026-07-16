@@ -54,20 +54,17 @@ export default function ResetPasswordPage() {
         </h1>
 
         <input
-          type="password"
-          placeholder="Nieuw wachtwoord"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={{
-            width: "100%",
-            padding: 14,
-            borderRadius: 12,
-            border: "1px solid #ccc",
-            marginBottom: 20,
-            backgroundColor: "white",
-            color: "black",
-          }}
-        />
+  type="password"
+  placeholder="Nieuw wachtwoord"
+  value={password}
+  onChange={(e) => setPassword(e.target.value)}
+  className="w-full rounded-xl border bg-white px-4 py-4 text-black placeholder:text-gray-500"
+  style={{
+    marginBottom: 20,
+    WebkitTextFillColor: "black",
+    caretColor: "black",
+  }}
+/>
 
         <button
           type="submit"
