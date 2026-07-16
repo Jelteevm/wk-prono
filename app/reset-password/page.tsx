@@ -82,8 +82,20 @@ export default function ResetPasswordPage() {
         </button>
 
         {message && (
-          <p style={{ marginTop: 20, fontWeight: 700 }}>{message}</p>
-        )}
+  <p
+    style={{
+      marginTop: 20,
+      padding: 12,
+      borderRadius: 12,
+      backgroundColor: "#dcfce7",
+      color: "#166534",
+      fontWeight: 700,
+      textAlign: "center",
+    }}
+  >
+    {message}
+  </p>
+)}
       </form>
     </main>
   );

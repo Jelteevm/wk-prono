@@ -4,6 +4,7 @@ export default async function LoginPage({
   searchParams: Promise<{
     registered?: string;
     error?: string;
+    reset?: string;
   }>;
 }) {
   const params = await searchParams;
