@@ -64,6 +64,7 @@ export default function ResetPasswordPage() {
             borderRadius: 12,
             border: "1px solid #ccc",
             marginBottom: 20,
+            backgroundColor: "white",
             color: "black",
           }}
         />
