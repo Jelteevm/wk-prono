@@ -12,7 +12,7 @@ export default async function LoginPage({
   return (
     <main
       className="min-h-screen flex items-center justify-center px-6"
-      style={{ backgroundColor: "#A30000" }}
+      style={{ backgroundColor: "#03162E" }}
     >
       <form
         action="/api/login"

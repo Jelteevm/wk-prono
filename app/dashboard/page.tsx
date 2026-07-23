@@ -242,8 +242,8 @@ function isMatchLocked(match: Match) {
       return (
         <div
           style={{
-            width: 64,
-            height: 64,
+            width: 75,
+            height: 75,
             borderRadius: "50%",
             backgroundColor: "#eee",
             margin: "0 auto 8px auto",
@@ -255,8 +255,8 @@ function isMatchLocked(match: Match) {
     return (
       <div
         style={{
-          width: 64,
-          height: 64,
+          width: 75,
+          height: 75,
           borderRadius: "50%",
           backgroundColor: "white",
           display: "flex",
@@ -270,9 +270,10 @@ function isMatchLocked(match: Match) {
           src={`/${flag}`}
           alt={alt}
           style={{
-            width: 64,
-            height: 64,
+            width: 75,
+            height: 75,
             objectFit: "cover",
+            transform: "scale(1.08)",
             borderRadius: "50%",
             display: "block",
           }}
@@ -285,37 +286,39 @@ function isMatchLocked(match: Match) {
     <main
       style={{
         minHeight: "100vh",
-        backgroundColor: "#A30000",
+        backgroundColor: "#03162E",
         color: "white",
-        padding: "32px 20px",
+        padding: "65px 20px",
       }}
     >
       <div style={{ maxWidth: 430, margin: "0 auto" }}>
-        <div style={{ marginBottom: 28 }}>
+        <div style={{ marginBottom: 35 }}>
           <Menu username={username} isAdmin={isAdmin} avatarUrl={avatarUrl} />
         </div>
 
-        <details style={{ marginBottom: 20 }}>
+        <details style={{ marginBottom: 30 }}>
           <summary
             style={{
               listStyle: "none",
               width: "100%",
-              backgroundColor: "#FCEA10",
-              color: "black",
+              background:"#163B68",
+              color:"white",
               borderRadius: 16,
               padding: "14px 20px",
               textAlign: "center",
               fontSize: 22,
               fontWeight: 900,
               cursor: "pointer",
+              border: "1px solid rgba(255,255,255,0.10)",
+              boxShadow: "0 8px 20px rgba(0,0,0,0.22)",
             }}
           >
-            📅 {selectedDate ? formatDate(selectedDate) : "Kies datum"} ▼
+            {selectedDate ? formatDate(selectedDate) : "Kies datum"} ▼
           </summary>
 
           <div
             style={{
-              backgroundColor: "white",
+              backgroundColor: "#123D7",
               borderRadius: 16,
               padding: 10,
               marginTop: 10,
@@ -334,7 +337,7 @@ function isMatchLocked(match: Match) {
                   marginBottom: 8,
                   borderRadius: 12,
                   backgroundColor:
-                    selectedDate === date ? "#FCEA10" : "#f1f1f1",
+                    selectedDate === date ? "#D7A73F"  : "#f1f1f1",
                   color: "black",
                   fontWeight: 900,
                   textAlign: "center",
@@ -376,22 +379,23 @@ function isMatchLocked(match: Match) {
                 key={match.id}
                 style={{
                   overflow: "hidden",
-                  borderRadius: 18,
-                  boxShadow: "0 8px 20px rgba(0,0,0,0.22)",
-                  backgroundColor: "white",
+                  borderRadius: 24,
+                  boxShadow: "0 12px 28px rgba(0,0,0,0.24)",
+                  backgroundColor: "#e6e8e9",
                 }}
               >
                 <div
                   style={{
-                    backgroundColor: "#FCEA10",
-                    color: "black",
-                    padding: "10px 14px",
-                    display: "grid",
-                    gridTemplateColumns: "1fr auto",
-                    alignItems: "center",
-                    gap: 10,
-                    fontWeight: 900,
-                  }}
+  background:"#FCEA10",
+  color: "black",
+  padding: "12px 16px",
+  display: "grid",
+  gridTemplateColumns: "1fr auto",
+  alignItems: "center",
+  gap: 10,
+  fontWeight: 900,
+  borderBottom: "1px solid rgba(0,0,0,0.10)",
+}}
                 >
                   <div style={{ fontSize: 14, lineHeight: 1.25 }}>
                     🏟️ {match.stadium || "Stadion nog niet gekend"},{" "}
@@ -406,10 +410,10 @@ function isMatchLocked(match: Match) {
                 <div
                   style={{
                     color: "black",
-                    paddingTop: 16,
-                    paddingBottom: 20,
-                    paddingLeft: 16,
-                    paddingRight: 16,
+                    paddingTop: 24,
+                    paddingBottom: 24,
+                    paddingLeft: 20,
+                    paddingRight: 20,
                     display: "grid",
                     gridTemplateColumns: "1fr 1fr 1fr",
                     alignItems: "center",
@@ -417,7 +421,16 @@ function isMatchLocked(match: Match) {
                 >
                   <div style={{ textAlign: "center" }}>
                     {renderFlag(match.home_flag, match.home_team)}
-                    <div style={{ fontWeight: 900 }}>{match.home_team}</div>
+                   <div
+  style={{
+    fontWeight: 900,
+    fontSize: 19,
+    marginTop: 19,
+    lineHeight: 1.2,
+  }}
+>
+  {match.home_team}
+</div>
                   </div>
 
                   <div style={{ textAlign: "center" }}>
@@ -425,11 +438,11 @@ function isMatchLocked(match: Match) {
   <div
     style={{
       display: "inline-block",
-      backgroundColor: "#FCEA10",
+      background: "#D7A73F",
       color: "black",
-      borderRadius: 2,
+      borderRadius: 7,
       padding: "8px 12px",
-      marginTop: -20,
+      marginTop: -29,
       marginBottom: 8,
       fontWeight: 900,
       
@@ -472,7 +485,16 @@ function isMatchLocked(match: Match) {
 
                   <div style={{ textAlign: "center" }}>
                     {renderFlag(match.away_flag, match.away_team)}
-                    <div style={{ fontWeight: 900 }}>{match.away_team}</div>
+                    <div
+  style={{
+    fontWeight: 900,
+    fontSize: 19,
+    marginTop: 19,
+    lineHeight: 1.2,
+  }}
+>
+  {match.away_team}
+</div>
                   </div>
                 </div>
 
@@ -480,7 +502,7 @@ function isMatchLocked(match: Match) {
                   <summary
                     style={{
                       listStyle: "none",
-                      backgroundColor: "#FCEA10",
+                      background: "#FCEA10",
                       color: "black",
                       padding: "12px 16px",
                       textAlign: "center",
@@ -495,7 +517,7 @@ function isMatchLocked(match: Match) {
                   <div
                     style={{
                       color: "black",
-                      backgroundColor: "#fff8b8",
+                      backgroundColor: "#F5F6F7",
                       padding: 14,
                     }}
                   >
@@ -655,37 +677,41 @@ function isMatchLocked(match: Match) {
             display: "flex",
             flexDirection: "column",
             gap: 16,
-            marginTop: 24,
+            marginTop: 30,
           }}
         >
           <Link
             href="/voorspellingen"
             style={{
-              backgroundColor: "#FCEA10",
-              color: "black",
-              borderRadius: 16,
-              padding: 18,
-              textAlign: "center",
-              fontSize: 22,
-              fontWeight: 900,
-              textDecoration: "none",
-            }}
+  background: "linear-gradient(180deg, #163B68 0%, #123D70 100%)",
+  color: "white",
+  borderRadius: 20,
+  border: "1px solid #C9A13C",
+  padding: 18,
+  textAlign: "center",
+  fontSize: 22,
+  fontWeight: 900,
+  textDecoration: "none",
+  boxShadow: "0 0 0 1px rgba(212,167,70,.45),0 10px 24px rgba(0,0,0,.25)",
+}}
           >
             ⚽ Mijn pronostiek invullen
           </Link>
 
           <Link
             href="/ranking"
-            style={{
-              backgroundColor: "#FCEA10",
-              color: "black",
-              borderRadius: 16,
-              padding: 18,
-              textAlign: "center",
-              fontSize: 22,
-              fontWeight: 900,
-              textDecoration: "none",
-            }}
+           style={{
+  background: "linear-gradient(180deg, #163B68 0%, #123D70 100%)",
+  color: "white",
+  borderRadius: 20,
+  border: "1px solid #D7A73F",
+  padding: 18,
+  textAlign: "center",
+  fontSize: 22,
+  fontWeight: 900,
+  textDecoration: "none",
+  boxShadow: "0 0 0 1px rgba(212,167,70,.45),0 10px 24px rgba(0,0,0,.25)",
+}}
           >
             🏆 Ranking bekijken
           </Link>

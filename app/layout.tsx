@@ -15,10 +15,18 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "WK Prono",
   description: "WK Pronostiek",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "WK Prono",
+  },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#A30000",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#123D70",
 };
 
 export default function RootLayout({
@@ -31,17 +39,7 @@ export default function RootLayout({
       lang="nl"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <head>
-        <meta name="theme-color" content="#A30000" />
-        <meta
-          name="apple-mobile-web-app-status-bar-style"
-          content="black-translucent"
-        />
-      </head>
-
-      <body className="min-h-full flex flex-col">
-        {children}
-      </body>
+      <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
 }

@@ -29,15 +29,16 @@ export default async function ReglementPage() {
 
   return (
     <main
-      className="min-h-screen px-6 py-8 text-white"
-      style={{ backgroundColor: "#A30000" }}
-    >
-      <div className="mx-auto max-w-md">
-        <div style={{ marginBottom: 20 }}>
-          <Menu username={username} isAdmin={isAdmin} avatarUrl={avatarUrl} />
-        </div>
+  className="min-h-screen text-white"
+  style={{ backgroundColor: "#03162E" }}
+>
+  <Menu username={username} isAdmin={isAdmin} avatarUrl={avatarUrl} />
 
-        <div className="rounded-2xl bg-white p-6 text-black shadow-lg">
+  <div
+    className="mx-auto max-w-md px-6 pb-8"
+    style={{ paddingTop: 92 }}
+  >
+    <div className="rounded-2xl bg-white p-6 text-black shadow-lg">
           <h1 className="mb-6 text-center text-3xl font-black">
             REGLEMENT WK PRONOSTIEK 2026 
           </h1>

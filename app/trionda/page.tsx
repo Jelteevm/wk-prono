@@ -22,7 +22,11 @@ type TriondaResult = {
   yellow_card_players: string[] | null;
 };
 
-async function fetchAll(supabase: any, table: string, columns: string) {
+async function fetchAll(
+  supabase: any,
+  table: string,
+  columns: string
+) {
   let all: any[] = [];
   let from = 0;
   const size = 1000;
@@ -33,12 +37,20 @@ async function fetchAll(supabase: any, table: string, columns: string) {
       .select(columns)
       .range(from, from + size - 1);
 
-    if (error) throw error;
-    if (!data || data.length === 0) break;
+    if (error) {
+      throw error;
+    }
+
+    if (!data || data.length === 0) {
+      break;
+    }
 
     all = all.concat(data);
 
-    if (data.length < size) break;
+    if (data.length < size) {
+      break;
+    }
+
     from += size;
   }
 
@@ -53,23 +65,34 @@ function calculateTriondaPoints(
   prediction: TriondaPrediction,
   result: TriondaResult | undefined
 ) {
-  if (!result) return 0;
+  if (!result) {
+    return 0;
+  }
 
   const scorerCorrect =
-    clean(prediction.first_scorer) &&
+    Boolean(clean(prediction.first_scorer)) &&
     clean(prediction.first_scorer) === clean(result.first_scorer);
 
   const yellowCorrect =
-    clean(prediction.yellow_card_player) &&
+    Boolean(clean(prediction.yellow_card_player)) &&
     (result.yellow_card_players || []).some(
-      (player) => clean(player) === clean(prediction.yellow_card_player)
+      (player) =>
+        clean(player) === clean(prediction.yellow_card_player)
     );
 
   let points = 0;
 
-  if (scorerCorrect) points += 2;
-  if (yellowCorrect) points += 2;
-  if (scorerCorrect && yellowCorrect) points += 1;
+  if (scorerCorrect) {
+    points += 2;
+  }
+
+  if (yellowCorrect) {
+    points += 2;
+  }
+
+  if (scorerCorrect && yellowCorrect) {
+    points += 1;
+  }
 
   return points;
 }
@@ -123,13 +146,19 @@ export default async function TriondaPage() {
         (prediction) => prediction.user_id === profile.id
       );
 
-      const points = userPredictions.reduce((total, prediction) => {
-        const result = results.find(
-          (result) => result.match_id === prediction.match_id
-        );
+      const points = userPredictions.reduce(
+        (total, prediction) => {
+          const result = results.find(
+            (result) => result.match_id === prediction.match_id
+          );
 
-        return total + calculateTriondaPoints(prediction, result);
-      }, 0);
+          return (
+            total +
+            calculateTriondaPoints(prediction, result)
+          );
+        },
+        0
+      );
 
       return {
         ...profile,
@@ -137,66 +166,77 @@ export default async function TriondaPage() {
       };
     })
     .sort((a, b) => {
-      if (b.points !== a.points) return b.points - a.points;
+      if (b.points !== a.points) {
+        return b.points - a.points;
+      }
+
       return a.username.localeCompare(b.username);
     });
 
   return (
     <main
-      className="min-h-screen px-6 py-8 text-white"
-      style={{ backgroundColor: "#A30000" }}
+      className="min-h-screen text-white"
+      style={{ backgroundColor: "#03162E" }}
     >
-      <div className="mx-auto max-w-md">
-        <div style={{ marginBottom: 20 }}>
-          <Menu username={username} isAdmin={isAdmin} avatarUrl={avatarUrl} />
+      <Menu
+        username={username}
+        isAdmin={isAdmin}
+        avatarUrl={avatarUrl}
+      />
+
+      <div
+        className="mx-auto max-w-md px-6 pb-8"
+        style={{ paddingTop: 92 }}
+      >
+        <h1 className="mb-4 text-center text-3xl font-black">
+          Trionda Matchball Challenge
+        </h1>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: 20,
+          }}
+        >
+          <img
+            src="/trionda.svg"
+            alt="Trionda"
+            width={70}
+            height={70}
+            style={{
+              width: 70,
+              height: 70,
+            }}
+          />
         </div>
 
-        <h1 className="mb-4 text-center text-3xl font-black">
-        Trionda Matchball Challenge
-        </h1>
-<div
-  style={{
-    display: "flex",
-    justifyContent: "center",
-    marginBottom: 20,
-  }}
->
-  <img
-    src="/trionda.svg"
-    alt="Trionda"
-    style={{
-      width: 70,
-      height: 70,
-    }}
-  />
-</div>
-    
-<div
-  className="mb-6 rounded-2xl p-5 text-black"
-  style={{
-    backgroundColor: "#FCEA10",
-  }}
->
-  <div
-    style={{
-      display: "grid",
-      gridTemplateColumns: "1fr auto",
-      rowGap: 12,
-      columnGap: 20,
-      fontWeight: 900,
-      fontSize: 17,
-    }}
-  >
-    <div>⚽ Eerste doelpuntenmaker</div>
-    <div>2 pt</div>
+        <div
+          className="mb-6 rounded-2xl p-5 text-black"
+          style={{
+            backgroundColor: "#FCEA10",
+          }}
+        >
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr auto",
+              rowGap: 12,
+              columnGap: 20,
+              fontWeight: 900,
+              fontSize: 17,
+            }}
+          >
+            <div>⚽ Eerste doelpuntenmaker</div>
+            <div>2 pt</div>
 
-    <div>🟨 Gele kaart</div>
-    <div>2 pt</div>
+            <div>🟨 Gele kaart</div>
+            <div>2 pt</div>
 
-    <div>🎯 Beide juist</div>
-    <div>+1 bonus</div>
-  </div>
-</div>
+            <div>🎯 Beide juist</div>
+            <div>+1 bonus</div>
+          </div>
+        </div>
 
         <div className="flex flex-col gap-4">
           {ranking.map((player, index) => (
@@ -205,7 +245,8 @@ export default async function TriondaPage() {
               className="rounded-2xl bg-white p-5 text-black shadow-lg"
               style={{
                 display: "grid",
-                gridTemplateColumns: "42px 52px minmax(0, 1fr) auto",
+                gridTemplateColumns:
+                  "42px 52px minmax(0, 1fr) auto",
                 alignItems: "center",
                 gap: 12,
               }}
@@ -230,7 +271,7 @@ export default async function TriondaPage() {
                   width: 52,
                   height: 52,
                   borderRadius: "50%",
-                  backgroundColor: "#eee",
+                  backgroundColor: "#eeeeee",
                   overflow: "hidden",
                   display: "flex",
                   alignItems: "center",
@@ -242,6 +283,8 @@ export default async function TriondaPage() {
                   <img
                     src={player.avatar_url}
                     alt={player.username}
+                    width={52}
+                    height={52}
                     style={{
                       width: "100%",
                       height: "100%",
@@ -264,7 +307,12 @@ export default async function TriondaPage() {
                 {player.username}
               </div>
 
-              <div className="text-lg font-black">{player.points} pt</div>
+              <div
+                className="text-lg font-black"
+                style={{ whiteSpace: "nowrap" }}
+              >
+                {player.points} pt
+              </div>
             </div>
           ))}
         </div>

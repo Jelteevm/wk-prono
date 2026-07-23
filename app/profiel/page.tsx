@@ -30,13 +30,23 @@ export default async function ProfielPage() {
   }
 
   return (
-    <main className="min-h-screen px-6 py-8 text-white" style={{ backgroundColor: "#A30000" }}>
-      <div className="mx-auto max-w-md">
-        <div style={{ marginBottom: 20 }}>
-          <Menu username={username} isAdmin={isAdmin} avatarUrl={avatarUrl} />
-        </div>
+    <main
+  className="min-h-screen text-white"
+  style={{ backgroundColor: "#03162E" }}
+>
+  <Menu
+    username={username}
+    isAdmin={isAdmin}
+    avatarUrl={avatarUrl}
+  />
 
-        <h1 className="mb-6 text-center text-3xl font-black">👤 Mijn profiel</h1>
+  <div
+    className="mx-auto max-w-md px-6 pb-8"
+    style={{ paddingTop: 92 }}
+  >
+    <h1 className="mb-6 text-center text-3xl font-black">
+      Mijn profiel
+    </h1>
 
         <div className="rounded-2xl bg-white p-6 text-center text-black">
           <div style={{ width: 120, height: 120, borderRadius: "50%", backgroundColor: "#eee", margin: "0 auto 18px", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 44, fontWeight: 900 }}>

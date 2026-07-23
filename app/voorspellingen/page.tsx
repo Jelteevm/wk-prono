@@ -300,17 +300,19 @@ function isTriondaMatch(speeldag: string | null) {
   if (openSpeeldagen.length === 0) {
     return (
       <main
-        className="min-h-screen px-6 py-8 text-white"
-        style={{ backgroundColor: "#A30000" }}
-      >
-        <div className="mx-auto max-w-md">
-          <div style={{ marginBottom: 20 }}>
-            <Menu
-              username={username}
-              isAdmin={isAdmin}
-              avatarUrl={avatarUrl}
-            />
-          </div>
+  className="min-h-screen text-white"
+  style={{ backgroundColor: "#03162E" }}
+>
+  <Menu
+    username={username}
+    isAdmin={isAdmin}
+    avatarUrl={avatarUrl}
+  />
+
+  <div
+    className="mx-auto max-w-md px-6 pb-8"
+    style={{ paddingTop: 92 }}
+  >
 
           <h1 className="mb-8 text-center text-3xl font-black">
             Voorspellingen
@@ -340,15 +342,20 @@ function isTriondaMatch(speeldag: string | null) {
 
   return (
     <main
-      className="min-h-screen px-6 py-8 text-white"
-      style={{ backgroundColor: "#A30000" }}
-    >
-      <div className="mx-auto max-w-md">
-        <div style={{ marginBottom: 20 }}>
-          <Menu username={username} isAdmin={isAdmin} avatarUrl={avatarUrl} />
-        </div>
+  className="min-h-screen text-white"
+  style={{ backgroundColor: "#03162E" }}
+>
+  <Menu
+    username={username}
+    isAdmin={isAdmin}
+    avatarUrl={avatarUrl}
+  />
 
-        <form action="/api/predictions" method="POST">
+  <div
+    className="mx-auto max-w-md px-6 pb-8"
+    style={{ paddingTop: 92 }}
+  >
+    <form action="/api/predictions" method="POST">
           <h1 className="mb-8 text-center text-3xl font-black">
             Voorspellingen
           </h1>

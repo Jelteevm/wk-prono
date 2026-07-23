@@ -18,13 +18,7 @@ export function middleware(request: NextRequest) {
     path.startsWith(route)
   );
 
-  if (path === "/" && userId) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
-  }
 
-  if (path === "/" && !userId) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
 
   if (isProtectedRoute && !userId) {
     return NextResponse.redirect(new URL("/login?error=login_required", request.url));

@@ -159,30 +159,55 @@ const ranking: Profile[] = [...(profiles || [])].sort((a, b) => {
   const prizeMoney = ["250", "180", "130", "90", "70"];
 
   return (
-    <main
-      className="min-h-screen px-6 py-8 text-white"
-      style={{ backgroundColor: "#A30000" }}
+     <main
+    className="min-h-screen text-white"
+    style={{ backgroundColor: "#03162E" }}
+  >
+    <Menu
+      username={username}
+      isAdmin={isAdmin}
+      avatarUrl={avatarUrl}
+    />
+
+    <div
+      className="mx-auto max-w-md px-6 pb-8"
+      style={{ paddingTop: 92 }}
     >
-      <div className="mx-auto max-w-md">
-        <div style={{ marginBottom: 20 }}>
-          <Menu username={username} isAdmin={isAdmin} avatarUrl={avatarUrl} />
-        </div>
+      <h1 className="mb-6 text-center text-3xl font-black">
+        Ranking
+      </h1>
 
-        <h1 className="mb-6 text-center text-3xl font-black">🏆 Ranking</h1>
+      <div
+        className="flex flex-col gap-4"
+        style={{
+          position: "relative",
+          zIndex: 0,
+        }}
+      ></div>
 
-        <div className="flex flex-col gap-4">
+
+        <div
+  className="flex flex-col gap-4"
+  style={{
+    position: "relative",
+    zIndex: 0,
+  }}
+>
           {ranking.map((player, index) => {
             const winnerFlag = getTeamFlag(player.world_cup_winner);
             const scorerPhoto = getPlayerPhoto(player.top_scorer);
+            
 
             return (
               <div
                 key={player.id}
                 className="rounded-2xl bg-white text-black shadow-lg"
                 style={{
-                  overflow: "hidden",
-                  position: "relative",
-                }}
+  overflow: "hidden",
+  position: "relative",
+  zIndex: 0,
+  isolation: "isolate",
+}}
               >
                 <div
   style={{
@@ -199,7 +224,7 @@ const ranking: Profile[] = [...(profiles || [])].sort((a, b) => {
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    zIndex: 5,
+    zIndex: 1,
     border: "2px solid white",
     boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
     lineHeight: 1,

@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  --background: #A30000;
+  --background: #03162e;
   --foreground: #ffffff;
+  --header: #123d70;
 }
 
 @theme inline {
@@ -12,12 +13,18 @@
   --font-mono: var(--font-geist-mono);
 }
 
-html,
+html {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background-color: #123d70;
+}
+
 body {
   margin: 0;
   padding: 0;
   min-height: 100dvh;
-  background-color: #A30000 !important;
+  background-color: #03162e;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
   overscroll-behavior: none;
